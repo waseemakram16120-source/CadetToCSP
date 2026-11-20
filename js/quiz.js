@@ -106,7 +106,7 @@ window.onload = () => {
     questionCount = 5;
   } else if (quizType === 'MIXED') {
     countRow.classList.add('hidden');
-    countNote.textContent = "Mixed Mock Test: 20 questions — 4 from each of the 5 subjects.";
+    countNote.textContent = "Mixed Mock Test: 20 questions — drawn from all 7 subjects.";
     questionCount = 20;
   } else {
     const bankSize = (questionBank[selectedSubject] || []).length;

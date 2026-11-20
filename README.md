@@ -13,9 +13,10 @@ visitor's own browser (`localStorage`).
 | --- | --- |
 | `index.html` | Professional landing page — exam modes, subjects, features, Cadet → CSP roadmap |
 | `auth.html` | Login / Register / Guest demo (localStorage only — see note below) |
-| `dashboard.html` | Exam-mode selector, 5 subjects, Mixed Mock Test (20 Qs), AI topic quiz, daily streak, per-subject accuracy, weak-area hints, test history |
+| `dashboard.html` | Exam-mode selector, 7 subjects, Mixed Mock Test (20 Qs), AI topic quiz, daily streak, per-subject accuracy, weak-area hints, test history, CSS-section card |
 | `quiz.html` | Timed quiz engine — question palette, mark-for-review, question count (5/10/15), shuffle, elapsed timer, confirm-before-exit, full answer review |
 | `exams.html` | Real exam patterns & syllabus: PPSC one-paper, FPSC CSS, PMA Long Course, PAF, Pakistan Navy |
+| `css.html` | Full CSS (Central Superior Services) section — exam structure, compulsory & optional subjects, eligibility, essay practice (20 topics + 3-hour timer), précis practice, interview guidance, past papers 2020–2025 |
 | `css/style.css` | Shared army design system (olive drab, khaki, gold `#c9a227`, charcoal, paper) |
 | `js/data.js` | All question banks (plain script, no modules — works from `file://`) |
 | `js/quiz.js` | Quiz engine — marking rules, timers, palette, results, history, streak |
@@ -29,13 +30,44 @@ visitor's own browser (`localStorage`).
 | Everyday Science | 15 |
 | English & Grammar | 10 |
 | Islamiat & Pakistan Affairs | 10 |
-| **Subject total** | **65** |
+| CSS Compulsory MCQs | 15 |
+| English Précis & Composition | 15 |
+| **Subject total** | **95** |
 | AI topics (built-in) | 8 topics × 5 = 40 |
 | Mughal Empire, 1973 Constitution, Human Vitamins, Pakistan Movement, Islamic History, Geography of Pakistan, Computer & IT Basics, World Geography | |
-| **Grand total** | **105** |
+| **Grand total** | **135** |
 
 Every question carries a short, factual explanation. All questions are
 past-paper style (PPSC / FPSC pattern).
+
+## CSS Section (`css.html`)
+
+The full Central Superior Services road map, linked from the nav of every
+page and from the FPSC part of `exams.html`:
+
+- **Exam overview** — MPT (200 MCQs, 33% to pass, qualifying only), written
+  1,200 marks (600 compulsory + 600 optional), medical, psychological
+  assessment (qualifying only), viva voce 300 marks (100 to pass);
+  1,500 total, max 3 attempts.
+- **Compulsory subjects** — all 6 × 100 marks, with qualifying marks
+  (40% compulsory, 33% optional, 50% aggregate).
+- **Optional subjects** — all 7 groups with subjects and marks, plus the
+  selection rules (exactly 600 marks, max 200 per group) and a
+  choosing strategy.
+- **Eligibility** — degree (second division), age generally 21–30 with
+  relaxation under the rules, nationality, attempts; disclaimer to confirm
+  from the official FPSC advertisement.
+- **Essay practice** — 20 topics: 14 verified past-paper topics (CSS 2025
+  × 10, CSS 2024 × 4) + 6 clearly labelled practice topics, each with a
+  2–3 line outline hint; a 3-hour practice timer (start/pause/reset) and a
+  writing checklist (~2,500–3,000 words).
+- **Précis practice** — 3 original passages with model précis (word counts
+  verified: 150→52, 149→52, 143→52) and the précis rules.
+- **Interview guidance** — psychological assessment and viva voce explained,
+  20 common interview questions with answer guidance, practical tips.
+- **Past papers** — compulsory papers by year, 2020–2025, with a link only
+  to the official FPSC homepage (https://www.fpsc.gov.pk) — no invented
+  download links.
 
 ## Exam rules (built into the engine — do not change casually)
 

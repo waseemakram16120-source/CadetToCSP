@@ -414,6 +414,192 @@ window.CADET_QUESTION_BANK = {
       answer: 0,
       explanation: "Masjid Quba, built by the Holy Prophet (PBUH) on arrival at Quba during the Hijrah, is the first mosque of Islam."
     }
+  ],
+
+  "CSS Compulsory": [
+    {
+      q: "Who was the first President of Pakistan?",
+      options: ["Iskander Mirza", "Ayub Khan", "Quaid-e-Azam Muhammad Ali Jinnah", "Ghulam Muhammad"],
+      answer: 0,
+      explanation: "Iskander Mirza became the first President of Pakistan on 23 March 1956, when the country became a Republic under its first Constitution."
+    },
+    {
+      q: "The 18th Amendment to the 1973 Constitution was passed in which year?",
+      options: ["2008", "2010", "2012", "2018"],
+      answer: 1,
+      explanation: "The 18th Amendment was passed in April 2010. It devolved major powers to the provinces and inserted Article 25-A (free compulsory education)."
+    },
+    {
+      q: "Which Article of the 1973 Constitution declares Islam as the State religion of Pakistan?",
+      options: ["Article 1", "Article 2", "Article 2-A", "Article 31"],
+      answer: 1,
+      explanation: "Article 2 states: 'Islam shall be the State religion of Pakistan.' Article 2-A makes the Objectives Resolution a substantive part of the Constitution."
+    },
+    {
+      q: "How many general (directly elected) seats are there in the National Assembly of Pakistan?",
+      options: ["272", "266", "342", "300"],
+      answer: 1,
+      explanation: "The National Assembly has 336 seats in total: 266 directly elected general seats, 60 reserved for women and 10 for non-Muslims."
+    },
+    {
+      q: "The National Finance Commission (NFC) Award, which shares federal revenue with the provinces, is provided for in which Article of the Constitution?",
+      options: ["Article 140", "Article 160", "Article 175", "Article 184"],
+      answer: 1,
+      explanation: "Article 160 requires the President to constitute a National Finance Commission every five years to distribute revenues between the federation and the provinces."
+    },
+    {
+      q: "Which is the largest barrage in Pakistan?",
+      options: ["Sukkur Barrage", "Guddu Barrage", "Kotri Barrage", "Taunsa Barrage"],
+      answer: 0,
+      explanation: "Sukkur Barrage on the Indus River, completed in 1932, is the largest barrage in Pakistan and one of the largest in the world."
+    },
+    {
+      q: "The Durand Line forms the international border between Pakistan and:",
+      options: ["Iran", "Afghanistan", "China", "India"],
+      answer: 1,
+      explanation: "The Durand Line, drawn in 1893, is the 2,640 km border between Pakistan and Afghanistan."
+    },
+    {
+      q: "What is the national tree of Pakistan?",
+      options: ["Deodar", "Pine", "Neem", "Sheesham"],
+      answer: 0,
+      explanation: "The Deodar (Cedrus deodara) is the national tree of Pakistan."
+    },
+    {
+      q: "The first census of Pakistan after independence was held in:",
+      options: ["1948", "1951", "1961", "1971"],
+      answer: 1,
+      explanation: "Pakistan's first post-independence census was held in 1951."
+    },
+    {
+      q: "SAARC (South Asian Association for Regional Cooperation) was founded in:",
+      options: ["1983", "1985", "1988", "1990"],
+      answer: 1,
+      explanation: "SAARC was founded in Dhaka in December 1985 by seven South Asian states; Afghanistan joined later as the eighth member."
+    },
+    {
+      q: "The United Nations was founded in:",
+      options: ["1944", "1945", "1946", "1947"],
+      answer: 1,
+      explanation: "The UN Charter was signed in June 1945 and came into force on 24 October 1945."
+    },
+    {
+      q: "Which organ of the United Nations is primarily responsible for maintaining international peace and security?",
+      options: ["General Assembly", "Security Council", "Economic and Social Council", "International Court of Justice"],
+      answer: 1,
+      explanation: "Under the UN Charter, the Security Council has primary responsibility for the maintenance of international peace and security."
+    },
+    {
+      q: "The Holy Quran was revealed over a period of approximately:",
+      options: ["20 years", "21 years", "23 years", "25 years"],
+      answer: 2,
+      explanation: "The revelation of the Holy Quran spanned about 23 years, from 610 AD to 632 AD."
+    },
+    {
+      q: "Pakistan's 2024 IMF programme is an Extended Fund Facility (EFF) worth approximately:",
+      options: ["$3 billion", "$6 billion", "$7 billion", "$12 billion"],
+      answer: 2,
+      explanation: "In September 2024 the IMF approved a 37-month Extended Fund Facility of about $7 billion for Pakistan."
+    },
+    {
+      q: "Which country hosted the COP29 climate conference in 2024?",
+      options: ["United Arab Emirates", "Azerbaijan", "Egypt", "Brazil"],
+      answer: 1,
+      explanation: "COP29 was held in Baku, Azerbaijan, in November 2024. COP28 was in the UAE (2023) and COP30 in Brazil (2025)."
+    }
+  ],
+
+  "Precis & Composition": [
+    {
+      q: "Choose the synonym of 'Candid':",
+      options: ["Frank", "Secretive", "Dishonest", "Rude"],
+      answer: 0,
+      explanation: "'Candid' means frank and honest in speech, so 'frank' is its synonym."
+    },
+    {
+      q: "Choose the antonym of 'Generous':",
+      options: ["Kind", "Stingy", "Brave", "Honest"],
+      answer: 1,
+      explanation: "'Generous' means giving freely; its opposite is 'stingy' (miserly)."
+    },
+    {
+      q: "The word 'Canon' means:",
+      options: ["A large gun", "A church law or general rule", "A musical instrument", "A type of cloth"],
+      answer: 1,
+      explanation: "'Canon' is a rule, law or accepted principle (e.g. canon law). 'Cannon' (double n) is the large gun — a classic pair of words."
+    },
+    {
+      q: "The idiom 'to beat around the bush' means:",
+      options: ["To avoid the main point", "To work hard in a garden", "To speak very loudly", "To be completely honest"],
+      answer: 0,
+      explanation: "'To beat around the bush' means to avoid saying what you really mean, or to talk about unimportant things first."
+    },
+    {
+      q: "The idiom 'a blessing in disguise' means:",
+      options: ["A hidden curse", "Something good that seemed bad at first", "A secret gift", "Pure luck"],
+      answer: 1,
+      explanation: "'A blessing in disguise' is an apparent misfortune that later turns out to have good results."
+    },
+    {
+      q: "Choose the correctly spelled word:",
+      options: ["Accomodate", "Acommodate", "Accommodate", "Accomoddate"],
+      answer: 2,
+      explanation: "'Accommodate' is spelled with double 'c' and double 'm'."
+    },
+    {
+      q: "Choose the correct sentence:",
+      options: ["The committee have decided.", "The committee has decided.", "The committee are decided.", "The committee have decide."],
+      answer: 1,
+      explanation: "In this usage 'committee' is a collective noun treated as singular, so it takes 'has': 'The committee has decided.'"
+    },
+    {
+      q: "Choose the synonym of 'Obsolete':",
+      options: ["Modern", "Outdated", "Useful", "New"],
+      answer: 1,
+      explanation: "'Obsolete' means no longer used or out of date, so 'outdated' is its synonym."
+    },
+    {
+      q: "Choose the antonym of 'Transparent':",
+      options: ["Clear", "Opaque", "Honest", "Thin"],
+      answer: 1,
+      explanation: "'Transparent' means allowing light through or easy to see through; its opposite is 'opaque'."
+    },
+    {
+      q: "A person who speaks many languages is called a:",
+      options: ["Linguist", "Polyglot", "Bilingual", "Orator"],
+      answer: 1,
+      explanation: "A 'polyglot' is a person who knows and uses several languages. A 'linguist' studies language; a 'bilingual' knows two."
+    },
+    {
+      q: "Choose the correct pair: 'The ___ of the college announced a new ___ for admissions.'",
+      options: ["principal / principle", "principle / principal", "principal / principal", "principle / principle"],
+      answer: 0,
+      explanation: "'Principal' is the head of an institution; 'principle' is a rule. So: 'The principal of the college announced a new principle for admissions.'"
+    },
+    {
+      q: "The idiom 'to break the ice' means:",
+      options: ["To start a conversation in a social setting", "To break something frozen", "To feel very cold", "To end a friendship"],
+      answer: 0,
+      explanation: "'To break the ice' means to get a conversation started and ease the first awkwardness between people."
+    },
+    {
+      q: "Choose the correct preposition: 'He is good ___ mathematics.'",
+      options: ["at", "in", "on", "for"],
+      answer: 0,
+      explanation: "The correct collocation is 'good at' — 'He is good at mathematics.'"
+    },
+    {
+      q: "Choose the synonym of 'Meticulous':",
+      options: ["Careless", "Careful", "Hasty", "Rough"],
+      answer: 1,
+      explanation: "'Meticulous' means showing great attention to detail, so 'careful' (or 'thorough') is its synonym."
+    },
+    {
+      q: "Choose the antonym of 'Scarce':",
+      options: ["Rare", "Abundant", "Costly", "Few"],
+      answer: 1,
+      explanation: "'Scarce' means in short supply; its opposite is 'abundant' (plentiful)."
+    }
   ]
 };
 
@@ -683,5 +869,7 @@ window.CADET_SUBJECTS = [
   { key: "General Knowledge", name: "General Knowledge", icon: "🌍", tagline: "World Capitals, Currencies, International Organizations (UNO, OIC, SAARC), Geography." },
   { key: "Everyday Science", name: "Everyday Science", icon: "🔬", tagline: "Vitamins & Deficiencies, Solar System, SI Units, Human Anatomy & Inventions." },
   { key: "English", name: "English & Grammar", icon: "✍️", tagline: "Vocabulary, Synonyms & Antonyms, Spelling, Tenses, Voice & Idioms." },
-  { key: "Islamiat", name: "Islamiat & Pakistan Affairs", icon: "☪️", tagline: "Quran & Seerah, Pillars of Islam, National Symbols & Anthem." }
+  { key: "Islamiat", name: "Islamiat & Pakistan Affairs", icon: "☪️", tagline: "Quran & Seerah, Pillars of Islam, National Symbols & Anthem." },
+  { key: "CSS Compulsory", name: "CSS Compulsory MCQs", icon: "🏛️", tagline: "Pakistan Affairs, Current Affairs, Islamiat & General Science — the CSS compulsory base." },
+  { key: "Precis & Composition", name: "English Précis & Composition", icon: "📝", tagline: "Grammar, vocabulary, synonyms & antonyms, idioms and pairs of words." }
 ];

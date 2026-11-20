@@ -14,7 +14,9 @@ No paid services. All progress is stored in the visitor's own browser
 | --- | --- |
 | `index.html` | Professional landing page — exam modes, subjects, features, Cadet → CSP roadmap |
 | `auth.html` | Real login / register with Firebase Auth (email + password, email verification, password reset) — or guest/demo mode when Firebase is not connected yet |
-| `dashboard.html` | Exam-mode selector, 7 subjects, Mixed Mock Test (20 Qs), AI topic quiz (topic, difficulty, count), Gemini key settings, daily streak, per-subject accuracy, weak-area hints, test history, CSS-section card, signed-in user + cloud sync status, logout |
+| `dashboard.html` | Exam-mode selector, 7 subjects, Mixed Mock Test (20 Qs), AI topic quiz (topic, difficulty, count), Gemini key settings, daily streak, per-subject accuracy, weak-area hints, test history, CSS-section card, signed-in user + cloud sync status, logout, detailed analytics (best score, stars, trend, 7-day activity, strongest/weakest), leaderboard Top 5 preview + opt-in toggle |
+| `leaderboard.html` | Public merit list — ranked table (rank, name, total score, stars, tests, best, streak), top 3 highlighted, your own row highlighted, refresh button, empty state; signed-in users only |
+| `js/analytics.js` | Pure analytics helpers — stars, totals, per-subject accuracy, score trend, 7-day activity, strongest/weakest, leaderboard entry shape + ranking (plain script, no modules) |
 | `quiz.html` | Timed quiz engine — question palette, mark-for-review, question count (5/10/15), shuffle, elapsed timer, confirm-before-exit, full answer review |
 | `exams.html` | Real exam patterns & syllabus: PPSC one-paper, FPSC CSS, PMA Long Course, PAF, Pakistan Navy |
 | `css.html` | Full CSS (Central Superior Services) section — exam structure, compulsory & optional subjects, eligibility, essay practice (20 topics + 3-hour timer), précis practice, interview guidance, past papers 2020–2025 |
@@ -22,8 +24,8 @@ No paid services. All progress is stored in the visitor's own browser
 | `js/data.js` | All question banks (plain script, no modules — works from `file://`) |
 | `js/ai.js` | Gemini client — live question generation, strict response validation, bring-your-own-key storage, connection test (plain script, no modules) |
 | `js/firebase-config.js` | Your Firebase project's Web-app config — **placeholders until you paste your own values** (see "Real accounts & backend" below) |
-| `js/firebase.js` | Firebase client — Auth (signup/login/logout/password reset), Firestore sync of test history + streak + profile, one-time local → cloud migration, guest-mode fallback (plain script, no modules) |
-| `firestore.rules` | Security rules: each user can read/write only their own `users/{uid}` document; everything else denied |
+| `js/firebase.js` | Firebase client — Auth (signup/login/logout/password reset), Firestore sync of test history + streak + profile, one-time local → cloud migration, leaderboard publish/opt-in/fetch, guest-mode fallback (plain script, no modules) |
+| `firestore.rules` | Security rules: each user can read/write only their own `users/{uid}` document; any signed-in user can read the public `leaderboard/{uid}` entries but write only their own; everything else denied |
 | `js/quiz.js` | Quiz engine — marking rules, timers, palette, results, history, streak (+ cloud sync after each finished test when signed in) |
 
 ## Question banks
@@ -193,7 +195,8 @@ works in guest mode** — accounts and progress stay in the browser only
   (localStorage `cadetCloudMigratedUid`).
 - **Security rules** (`firestore.rules`) — a signed-in user can read and
   write only their own `users/{uid}` document; everything else is denied
-  by default, including listing the users collection.
+  by default, including listing the users collection. (Step 4 adds the
+  public `leaderboard` rule — see "Leaderboard & detailed analytics".)
 - **Privacy** — no password, API key or token is ever logged or stored in
   the repository. The Firebase config values are public identifiers; the
   real protection is the security rules. "Continue as Guest" stays
@@ -204,6 +207,56 @@ works in guest mode** — accounts and progress stay in the browser only
 wrong password, email already in use), the page shows a plain-English
 reason and guest mode keeps working — the quiz never breaks because of
 the cloud.
+
+## Leaderboard & detailed analytics (Step 4)
+
+The dashboard now has a **Detailed Analytics** section and a **Leaderboard**
+(`leaderboard.html`, linked from the nav of every page).
+
+### Detailed analytics (works for guests too — local data)
+
+Computed on the dashboard from your test history (cloud data when signed
+in, local history for guests) — no new library, pure CSS/SVG:
+
+- **Totals** — best score (best accuracy in one test) and total stars.
+- **Stars** — earned per test: 3 stars at 90%+ accuracy, 2 at 70%+, 1 at
+  50%+, otherwise 0. The same rule feeds the leaderboard, so both agree.
+- **Score trend** — accuracy across your last 7 tests (SVG line chart).
+- **Activity** — tests per day for the last 7 days (CSS bars).
+- **Strongest / weakest subject** — from per-subject accuracy (the
+  existing per-subject bars + weak-area hints are still there, above it).
+
+### Leaderboard (signed-in users only)
+
+- **How it works** — after every finished test, the site publishes your
+  public entry to Firestore `leaderboard/{uid}`:
+  `{displayName, totalScore, totalStars, testsTaken, bestScore, streak, updatedAt}`.
+  `totalScore` is the sum of your net scores; ranking is by total score,
+  then stars, then tests taken. The board refreshes after every test, and
+  the dashboard shows a Top 5 preview.
+- **What is public** — only your **display name and scores**. Your email
+  is NEVER written to the leaderboard and never shown anywhere public.
+- **Opt-out** — the dashboard has a "Show me on the leaderboard" toggle
+  (on by default). Uncheck it and your public entry is deleted
+  immediately; check it again to reappear. The choice is stored in your
+  user document (`leaderboardOptIn`) and synced across devices. Guests
+  never publish anything and see a sign-in prompt instead of the board.
+- **Empty state** — if no one is on the board yet, the page says so
+  ("You're the first aspirant on the board") instead of showing a
+  blank table.
+
+### ⚠️ Re-publish the rules — required for the leaderboard
+
+If you already published the Step 3 rules, you **must publish the updated
+`firestore.rules` again**, or the leaderboard will fail with a
+permissions error (the old rules deny the `leaderboard` collection):
+
+1. In the Firebase Console, go to **Build → Firestore Database → Rules**.
+2. Delete the rules shown there, paste the whole contents of the updated
+   `firestore.rules` from this project, and click **Publish**.
+3. Open `leaderboard.html` while signed in — the board should load. (If
+   you signed in before, sign out and back in once so your user document
+   picks up the `leaderboardOptIn` flag, then finish a test.)
 
 ## Accounts & privacy — please read
 
@@ -231,7 +284,7 @@ other than the public Web-app config in this site.
 - [ ] Printable revision sheets (workbook style)
 - [ ] Teacher / parent view of a student's progress
 - [x] Real accounts + backend (Firebase Auth + Firestore) — Step 3, done; needs your own free Firebase project + config to go live
-- [ ] Leaderboard + detailed analytics (Step 4)
+- [x] Leaderboard + detailed analytics (Step 4) — done; needs the updated `firestore.rules` re-published in the Firebase Console to go live
 
 ## Disclaimer
 

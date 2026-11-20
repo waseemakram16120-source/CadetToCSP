@@ -42,6 +42,8 @@
 
   var CONFIG = window.CADET_FIREBASE_CONFIG || {};
   var MIGRATED_KEY = 'cadetCloudMigratedUid';
+  var OPTIN_KEY = 'cadetLeaderboardOptIn'; // local cache: '1' = show me, '0' = hidden
+  var LEADERBOARD_COLLECTION = 'leaderboard';
   var MAX_HISTORY = 10;
 
   var auth = null;
@@ -96,6 +98,56 @@
 
   function setMigratedUid(uid) {
     try { localStorage.setItem(MIGRATED_KEY, uid); } catch (e) { /* ignore */ }
+  }
+
+  /* ---------- Leaderboard opt-in (local cache; default: shown) ---------- */
+  function getLeaderboardOptIn() {
+    try {
+      var v = localStorage.getItem(OPTIN_KEY);
+      return v === null ? true : v === '1';
+    } catch (e) { return true; }
+  }
+
+  function setOptInLocal(on) {
+    try { localStorage.setItem(OPTIN_KEY, on ? '1' : '0'); } catch (e) { /* ignore */ }
+  }
+
+  function displayNameFor(user) {
+    if (!user) return 'Aspirant';
+    try {
+      var local = localStorage.getItem('userName') || '';
+      if (local) return local;
+    } catch (e) { /* ignore */ }
+    return (user.displayName || (user.email || '').split('@')[0] || 'Aspirant');
+  }
+
+  /* Minimal fallback for the leaderboard totals, used only when
+     js/analytics.js failed to load. Same stars rule — keep in sync
+     with js/analytics.js (accuracy >= 90 -> 3, >= 70 -> 2, >= 50 -> 1). */
+  function computeEntryFallback(displayName, history, streak) {
+    var h = Array.isArray(history) ? history : [];
+    var totalScore = 0;
+    var totalStars = 0;
+    var bestScore = 0;
+    var i;
+    for (i = 0; i < h.length; i++) {
+      var e = h[i] || {};
+      var acc = parseFloat(e.accuracy);
+      if (isNaN(acc)) acc = 0;
+      acc = Math.max(0, Math.min(100, acc));
+      totalScore += (parseFloat(e.netScore) || 0);
+      totalStars += acc >= 90 ? 3 : acc >= 70 ? 2 : acc >= 50 ? 1 : 0;
+      if (acc > bestScore) bestScore = acc;
+    }
+    return {
+      displayName: (displayName || 'Aspirant').toString().slice(0, 40),
+      totalScore: Math.round(totalScore * 100) / 100,
+      totalStars: totalStars,
+      testsTaken: h.length,
+      bestScore: bestScore,
+      streak: (streak && streak.count) || 0,
+      updatedAt: new Date().toISOString()
+    };
   }
 
   /* ---------- Merge logic (pure, tested) ---------- */
@@ -156,6 +208,7 @@
       },
       testHistory: (history || []).slice(0, MAX_HISTORY),
       streak: streak || { lastDate: null, count: 0 },
+      leaderboardOptIn: true, // default: this user appears on the leaderboard
       updatedAt: serverTimestamp()
     };
   }
@@ -342,6 +395,9 @@
       return fresh;
     }
     var cloud = snap.data() || {};
+    // The cloud document is the source of truth for the leaderboard
+    // opt-in flag; keep the local cache in step with it.
+    if (typeof cloud.leaderboardOptIn === 'boolean') setOptInLocal(cloud.leaderboardOptIn);
     var mergedHistory = mergeHistory(cloud.testHistory || [], readLocalHistory());
     var mergedStreak = mergeStreak(cloud.streak || null, readLocalStreak());
     writeLocalHistory(mergedHistory);
@@ -385,6 +441,100 @@
     }
   }
 
+  /* ---------- Leaderboard (Step 4) ----------
+     Public entries live in `leaderboard/{uid}` and contain ONLY
+     {displayName, totalScore, totalStars, testsTaken, bestScore,
+     streak, updatedAt} — NEVER an email or any private field.
+     Guests never publish anything. Every call is best-effort and
+     never throws, so the quiz/dashboard can never break on it. */
+  function buildEntry() {
+    var history = readLocalHistory();
+    var streak = readLocalStreak();
+    var name = displayNameFor(currentUser);
+    var entry;
+    if (window.CadetAnalytics && window.CadetAnalytics.buildLeaderboardEntry) {
+      entry = window.CadetAnalytics.buildLeaderboardEntry(name, history, streak);
+    } else {
+      entry = computeEntryFallback(name, history, streak);
+    }
+    entry.updatedAt = serverTimestamp();
+    return entry;
+  }
+
+  /* Publish (or refresh) this user's public leaderboard entry. */
+  async function publishLeaderboard() {
+    if (initState !== 'ready' || !currentUser || !db) return { published: false, reason: initState };
+    if (!getLeaderboardOptIn()) {
+      // Opted out: make sure no stale public entry remains.
+      await unpublishLeaderboard();
+      return { published: false, reason: 'opted-out' };
+    }
+    try {
+      await db.collection(LEADERBOARD_COLLECTION).doc(currentUser.uid).set(buildEntry());
+      return { published: true };
+    } catch (e) {
+      return { published: false, reason: 'write-failed' };
+    }
+  }
+
+  /* Remove this user's public leaderboard entry. Never throws. */
+  async function unpublishLeaderboard() {
+    if (initState !== 'ready' || !currentUser || !db) return false;
+    try {
+      await db.collection(LEADERBOARD_COLLECTION).doc(currentUser.uid).delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /* Opt in / out of the public leaderboard. Persists the choice in the
+     user document; opting out deletes the public entry immediately. */
+  async function setLeaderboardOptIn(on) {
+    var wanted = !!on;
+    setOptInLocal(wanted);
+    if (initState === 'ready' && currentUser && db) {
+      try {
+        await db.collection('users').doc(currentUser.uid).set(
+          { leaderboardOptIn: wanted, updatedAt: serverTimestamp() }, { merge: true });
+      } catch (e) { /* flag is cached locally; cloud write is best-effort */ }
+      if (wanted) {
+        return publishLeaderboard();
+      }
+      await unpublishLeaderboard();
+      return { published: false, reason: 'opted-out' };
+    }
+    return { published: false, reason: initState };
+  }
+
+  /* Read the public board, best first. Signed-in users only (see
+     firestore.rules); throws a friendly error otherwise. */
+  async function fetchLeaderboard(limit) {
+    ensureReady();
+    if (!currentUser) throw backendError('not-signed-in', 'Sign in to see the leaderboard.');
+    var n = Math.max(1, Math.min(100, limit || 50));
+    var snap = await db.collection(LEADERBOARD_COLLECTION)
+      .orderBy('totalScore', 'desc').limit(n).get();
+    var out = [];
+    snap.forEach(function (doc) {
+      var d = doc.data() || {};
+      out.push({
+        uid: doc.id,
+        displayName: (d.displayName || 'Aspirant').toString().slice(0, 40),
+        totalScore: (typeof d.totalScore === 'number') ? d.totalScore : 0,
+        totalStars: (typeof d.totalStars === 'number') ? d.totalStars : 0,
+        testsTaken: (typeof d.testsTaken === 'number') ? d.testsTaken : 0,
+        bestScore: (typeof d.bestScore === 'number') ? d.bestScore : 0,
+        streak: (typeof d.streak === 'number') ? d.streak : 0
+      });
+    });
+    // Stable rank order for ties (totalScore, then stars, then tests).
+    if (window.CadetAnalytics && window.CadetAnalytics.sortLeaderboard) {
+      return window.CadetAnalytics.sortLeaderboard(out);
+    }
+    return out;
+  }
+
   function getUser() { return currentUser; }
   function isLoggedIn() { return !!currentUser; }
   function getInitState() { return initState; }
@@ -414,6 +564,11 @@
     loadCloudData: loadCloudData,
     syncLocal: syncLocal,
     clearCloudData: clearCloudData,
+    getLeaderboardOptIn: getLeaderboardOptIn,
+    setLeaderboardOptIn: setLeaderboardOptIn,
+    publishLeaderboard: publishLeaderboard,
+    unpublishLeaderboard: unpublishLeaderboard,
+    fetchLeaderboard: fetchLeaderboard,
     friendlyAuthMessage: friendlyAuthMessage,
     /* Exposed for testing only: */
     _internals: {
@@ -424,6 +579,9 @@
       buildUserDoc: buildUserDoc,
       readLocalHistory: readLocalHistory,
       readLocalStreak: readLocalStreak,
+      computeEntryFallback: computeEntryFallback,
+      displayNameFor: displayNameFor,
+      OPTIN_KEY: OPTIN_KEY,
       MIGRATED_KEY: MIGRATED_KEY
     }
   };

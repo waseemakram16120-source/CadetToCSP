@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard — CadetToCSP</title>
+    <meta name="description" content="The CadetToCSP merit list: top aspirants ranked by total score, stars, tests taken and streak. Only names and scores are public — never emails.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
+                        gold: '#c9a227',
+                        khaki: '#c3b091',
+                        charcoal: '#1c1e1a',
+                        paper: '#f4f1e6'
+                    },
+                    fontFamily: {
+                        display: ['"Saira Stencil One"', 'cursive'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/analytics.js"></script>
+    <!-- Firebase (compat builds, plain <script> tags — no modules, works from file://).
+         Version 12.11.0 per Google's official docs. The leaderboard is read
+         from Firestore (collection "leaderboard") — signed-in users only,
+         see firestore.rules. Guests see a sign-in prompt instead. -->
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase.js"></script>
+    <style>
+        .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 2.1rem; height: 2.1rem; border-radius: 50%; font-weight: 800; font-size: .95rem; }
+        .rank-1 { background: var(--gold); color: var(--olive-950); box-shadow: 0 0 0 2px var(--gold-dark); }
+        .rank-2 { background: #c9c9c9; color: #23261f; box-shadow: 0 0 0 2px #8f8f8f; }
+        .rank-3 { background: #c08a4e; color: #fff; box-shadow: 0 0 0 2px #8a5a2b; }
+        .rank-other { background: var(--charcoal-3); color: var(--khaki-light); border: 1px solid #4a4d3d; }
+        tr.top-row td { background: rgba(201, 162, 39, .07); }
+        tr.me-row td { background: rgba(201, 162, 39, .16); border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+    </style>
+</head>
+<body class="ops-dark font-body min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <nav class="nav-army">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
+            <a href="index.html" class="flex items-center space-x-2.5">
+                <span class="logo-badge">CC</span>
+                <span class="logo-word text-white">CadetTo<span class="gold">CSP</span></span>
+            </a>
+            <div class="hidden md:flex items-center space-x-7">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="exams.html" class="nav-link">Exam Patterns</a>
+                <a href="css.html" class="nav-link">CSS Section</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="leaderboard.html" class="nav-link active">Leaderboard</a>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span id="activeModeBadge" class="dogtag">Merit List</span>
+                <a href="dashboard.html" class="btn-gold !py-2 !px-4 text-sm">My Dashboard →</a>
+            </div>
+        </div>
+        <div class="chevron-strip thin"></div>
+    </nav>
+
+    <main class="max-w-6xl w-full mx-auto px-6 py-10 space-y-8 flex-1">
+
+        <!-- Header -->
+        <section>
+            <p class="eyebrow" style="color: var(--gold);">Merit List • All Aspirants</p>
+            <h1 class="font-display text-3xl md:text-4xl text-white mt-1">🏆 Leaderboard</h1>
+            <p class="text-[#a9ad97] text-sm mt-2 max-w-2xl">
+                Ranked by <strong class="text-white">total score</strong>, then stars, then tests taken.
+                Every finished test counts — the more you practise (and the better you score), the higher you climb.
+                Only names and scores are public here — <strong class="text-white">never emails</strong>.
+                You can hide yourself any time from the Dashboard ("Show me on the leaderboard").
+            </p>
+        </section>
+
+        <!-- Controls -->
+        <section class="flex flex-wrap items-center justify-between gap-3">
+            <p id="boardStatus" class="text-sm text-[#a9ad97]">Loading the merit list…</p>
+            <button onclick="loadLeaderboard(true)" id="refreshBtn" class="btn-outline !py-2 !px-4 text-sm">↻ Refresh Board</button>
+        </section>
+
+        <!-- Board -->
+        <section class="card-army !p-0 overflow-hidden">
+            <div id="boardWrap" class="overflow-x-auto">
+                <table class="table-army">
+                    <thead>
+                        <tr>
+                            <th style="width: 4.5rem;">Rank</th>
+                            <th>Aspirant</th>
+                            <th>Total Score</th>
+                            <th>⭐ Stars</th>
+                            <th>Tests</th>
+                            <th>Best</th>
+                            <th>🔥 Streak</th>
+                        </tr>
+                    </thead>
+                    <tbody id="boardBody">
+                        <tr><td colspan="7" class="text-center text-[#a9ad97] py-8">Loading…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Empty state -->
+            <div id="emptyState" class="hidden text-center py-12 px-6">
+                <p class="text-4xl">🎖️</p>
+                <h3 class="font-display text-xl text-white mt-3">You're the first aspirant on the board</h3>
+                <p class="text-[#a9ad97] text-sm mt-2">No one has appeared on the leaderboard yet. Take a test and your name will be the first one here.</p>
+                <a href="dashboard.html" class="btn-gold mt-5 inline-block">Take a Test →</a>
+            </div>
+            <!-- Sign-in / setup states -->
+            <div id="boardNotice" class="hidden text-center py-12 px-6">
+                <p id="boardNoticeText" class="text-[#cfd2bd] text-sm"></p>
+                <a id="boardNoticeBtn" href="auth.html" class="btn-gold mt-5 inline-block hidden">Sign In / Register →</a>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="card-army">
+            <div class="section-head mb-3">
+                <span class="rank-mark">❯❯❯</span>
+                <h3 class="font-display text-lg text-white">How the ranking works</h3>
+            </div>
+            <ul class="text-sm text-[#cfd2bd] space-y-2 list-disc pl-5">
+                <li><strong class="text-white">Total Score</strong> — the sum of your net scores across all tests (PPSC −0.25 negative marking applies).</li>
+                <li><strong class="text-white">Stars</strong> — earned per test: 3 stars at 90%+ accuracy, 2 at 70%+, 1 at 50%+, otherwise 0.</li>
+                <li><strong class="text-white">Best</strong> — your best accuracy in any single test.</li>
+                <li><strong class="text-white">Streak</strong> — consecutive days with at least one test.</li>
+                <li>The board refreshes after every finished test. Opted out? Your row disappears — turn it back on from the Dashboard.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-army text-center py-6 text-sm text-khaki/70 mt-10">
+        <p>© 2026 CadetToCSP — PPSC &amp; Armed Forces Test Portal</p>
+    </footer>
+
+    <script>
+        window.onload = () => {
+            // Wait briefly for Firebase auth state to settle, then load.
+            setTimeout(loadLeaderboard, 700);
+            const b = window.CadetBackend;
+            if (b) b.onAuthChange(() => loadLeaderboard());
+        };
+
+        function showNotice(text, showBtn) {
+            document.getElementById('boardWrap').classList.add('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+            const n = document.getElementById('boardNotice');
+            n.classList.remove('hidden');
+            document.getElementById('boardNoticeText').textContent = text;
+            document.getElementById('boardNoticeBtn').classList.toggle('hidden', !showBtn);
+        }
+
+        function showBoard() {
+            document.getElementById('boardWrap').classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('boardNotice').classList.add('hidden');
+        }
+
+        function rankBadge(rank) {
+            if (rank === 1) return '<span class="rank-badge rank-1">🥇</span>';
+            if (rank === 2) return '<span class="rank-badge rank-2">🥈</span>';
+            if (rank === 3) return '<span class="rank-badge rank-3">🥉</span>';
+            return '<span class="rank-badge rank-other">' + rank + '</span>';
+        }
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        async function loadLeaderboard(manual) {
+            const status = document.getElementById('boardStatus');
+            const btn = document.getElementById('refreshBtn');
+            const b = window.CadetBackend;
+            if (!b) {
+                status.textContent = 'Cloud module could not load — reload the page.';
+                showNotice('The cloud module (js/firebase.js) could not load. Check your connection and reload the page.', false);
+                return;
+            }
+            if (b.getInitState() === 'not-configured') {
+                status.textContent = 'Leaderboard is off — Firebase is not connected yet.';
+                showNotice('The leaderboard needs a connected Firebase project (see README: paste your Web-app config into js/firebase-config.js and re-publish firestore.rules). Guest mode has no board.', false);
+                return;
+            }
+            if (b.getInitState() === 'no-sdk') {
+                status.textContent = 'Could not load Firebase — check your connection.';
+                showNotice('The Firebase SDK could not be loaded. Check your internet connection and reload the page.', false);
+                return;
+            }
+            if (!b.isLoggedIn()) {
+                status.textContent = 'Sign in to see the leaderboard.';
+                showNotice('The merit list is for signed-in aspirants. Sign in (or register) to see the board and to appear on it.', true);
+                return;
+            }
+            if (manual && btn) btn.disabled = true;
+            status.textContent = 'Loading the merit list…';
+            try {
+                const entries = await b.fetchLeaderboard(50);
+                const me = b.getUser();
+                const body = document.getElementById('boardBody');
+                if (!entries.length) {
+                    showBoard();
+                    body.innerHTML = '';
+                    document.getElementById('emptyState').classList.remove('hidden');
+                    status.textContent = 'No entries yet — be the first on the board.';
+                    return;
+                }
+                showBoard();
+                body.innerHTML = entries.map((e, i) => {
+                    const rank = i + 1;
+                    const isMe = me && e.uid === me.uid;
+                    const rowCls = (rank <= 3 ? 'top-row ' : '') + (isMe ? 'me-row' : '');
+                    return '<tr class="' + rowCls + '">' +
+                        '<td>' + rankBadge(rank) + '</td>' +
+                        '<td><span class="font-bold text-white">' + escapeHtml(e.displayName) + '</span>' +
+                        (isMe ? ' <span class="kbd-chip" style="color: var(--gold-light); border-color: var(--gold);">YOU</span>' : '') + '</td>' +
+                        '<td class="font-bold" style="color: var(--gold-light);">' + Number(e.totalScore).toFixed(2) + '</td>' +
+                        '<td>' + '⭐'.repeat(Math.min(3, Math.max(0, e.totalStars))) + ' ' + e.totalStars + '</td>' +
+                        '<td>' + e.testsTaken + '</td>' +
+                        '<td>' + e.bestScore + '%</td>' +
+                        '<td>' + e.streak + ' day(s)</td>' +
+                        '</tr>';
+                }).join('');
+                const myRank = entries.findIndex(e => me && e.uid === me.uid);
+                status.textContent = entries.length + ' aspirant(s) on the board' +
+                    (myRank >= 0 ? ' • You are ranked #' + (myRank + 1) : ' • You are not on the board yet — finish a test to appear.');
+            } catch (err) {
+                status.textContent = 'Could not load the board.';
+                showNotice('Could not load the leaderboard — ' + (err && err.message ? err.message : 'unknown error') +
+                    ' If this is a permissions error, re-publish the updated firestore.rules in the Firebase Console (see README).', false);
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

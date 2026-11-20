@@ -528,7 +528,8 @@ function saveScoreToHistory(subject, mode, netScore, total, accuracy, correct, w
     accuracy,
     correct: correct || 0,
     wrong: wrong || 0,
-    date: dateStr
+    date: dateStr,
+    ts: Date.now() // full timestamp — used by the 7-day activity chart (Step 4)
   });
 
   localStorage.setItem('testHistory', JSON.stringify(history.slice(0, 10)));
@@ -538,9 +539,12 @@ function saveScoreToHistory(subject, mode, netScore, total, accuracy, correct, w
   // when a Firebase user is signed in, the local mirror (history + streak)
   // is uploaded to Firestore; when logged out or not configured this is a
   // no-op and the local behaviour above is unchanged.
+  // Step 4 — leaderboard: refresh this user's public entry too
+  // (name + scores only, never email; guests publish nothing).
   try {
     if (window.CadetBackend) {
       window.CadetBackend.syncLocal().catch(function () { /* offline / not configured */ });
+      window.CadetBackend.publishLeaderboard().catch(function () { /* best-effort only */ });
     }
   } catch (e) { /* cloud sync must never break the quiz */ }
 }

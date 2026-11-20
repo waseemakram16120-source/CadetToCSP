@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — CadetToCSP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
+                        gold: '#c9a227',
+                        khaki: '#c3b091',
+                        charcoal: '#1c1e1a',
+                        paper: '#f4f1e6'
+                    },
+                    fontFamily: {
+                        display: ['"Saira Stencil One"', 'cursive'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/data.js"></script>
+</head>
+<body class="ops-dark font-body min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <nav class="nav-army">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
+            <a href="index.html" class="flex items-center space-x-2.5">
+                <span class="logo-badge">CC</span>
+                <span class="logo-word text-white">CadetTo<span class="gold">CSP</span></span>
+            </a>
+            <div class="hidden md:flex items-center space-x-7">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="exams.html" class="nav-link">Exam Patterns</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span id="activeModeBadge" class="dogtag">Mode: PPSC (−0.25)</span>
+                <div class="bg-[#33362a] px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-medium flex items-center space-x-2">
+                    <span>👤</span>
+                    <span id="aspirantNameDisplay">Aspirant Portal</span>
+                </div>
+                <a href="auth.html" class="text-xs text-[#a9ad97] hover:text-red-400 transition">Logout</a>
+            </div>
+        </div>
+        <div class="chevron-strip thin"></div>
+    </nav>
+
+    <main class="max-w-6xl w-full mx-auto px-6 py-10 space-y-10 flex-1">
+
+        <!-- Welcome + streak -->
+        <section class="flex flex-wrap justify-between items-end gap-4">
+            <div>
+                <p class="eyebrow" style="color: var(--gold);">Aspirant Dashboard</p>
+                <h1 class="font-display text-3xl md:text-4xl text-white mt-1">Welcome back, <span id="welcomeName" class="text-gold">Aspirant</span></h1>
+                <p class="text-[#a9ad97] text-sm mt-1">Discipline is the bridge between goals and accomplishment. One test a day keeps the merit list in sight.</p>
+            </div>
+            <div class="card-army !py-4 !px-5 flex items-center gap-4">
+                <span class="text-3xl">🔥</span>
+                <div>
+                    <p class="text-xs text-[#a9ad97] uppercase tracking-wider font-bold">Daily Streak</p>
+                    <p class="font-display text-2xl text-gold leading-none mt-0.5"><span id="streakCount">0</span> <span class="text-sm">day(s)</span></p>
+                    <p id="streakSub" class="text-xs text-[#8a8f7c] mt-1">Take a test to start your streak</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Stats Row -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div class="card-army">
+                <p class="text-[#a9ad97] text-sm">Total Tests Attempted</p>
+                <h2 id="statTotalTests" class="stat-num text-white mt-1">0</h2>
+            </div>
+            <div class="card-army">
+                <p class="text-[#a9ad97] text-sm">Average Accuracy</p>
+                <h2 id="statAvgAccuracy" class="stat-num mt-1" style="color: var(--gold-light);">0%</h2>
+            </div>
+            <div class="card-army">
+                <p class="text-[#a9ad97] text-sm">Last Test Net Score</p>
+                <h2 id="statLastScore" class="stat-num mt-1 text-amber-400">No Test Yet</h2>
+            </div>
+            <div class="card-army">
+                <p class="text-[#a9ad97] text-sm">Questions Practised</p>
+                <h2 id="statTotalQs" class="stat-num text-white mt-1">0</h2>
+            </div>
+        </section>
+
+        <!-- Step 1: Select Exam Pattern -->
+        <section class="card-army">
+            <div class="section-head mb-4">
+                <span class="rank-mark">❯❯❯</span>
+                <h3 class="font-display text-lg text-white">1. Select Your Target Exam Pattern</h3>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <button onclick="setExamMode('PPSC')" id="btnPPSC" class="mode-card active">
+                    <div class="flex justify-between items-center">
+                        <span class="mode-title font-bold text-lg">🏛️ PPSC / FPSC One-Paper Mode</span>
+                        <span id="tagPPSC" class="dogtag gold">Active</span>
+                    </div>
+                    <p class="text-[#a9ad97] text-sm mt-1">Includes −0.25 negative marking for wrong answers. Standard 60s per question.</p>
+                </button>
+
+                <button onclick="setExamMode('ARMY')" id="btnArmy" class="mode-card">
+                    <div class="flex justify-between items-center">
+                        <span class="mode-title font-bold text-lg">🎖️ Armed Forces Initial Test (PMA / PAF / Navy)</span>
+                        <span id="tagArmy" class="dogtag gold hidden">Active</span>
+                    </div>
+                    <p class="text-[#a9ad97] text-sm mt-1">Fast-paced academic test (30s per MCQ) with NO negative marking.</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- Step 2: Subjects (5) -->
+        <section>
+            <div class="section-head mb-4">
+                <span class="rank-mark">❯❯❯</span>
+                <h3 class="font-display text-lg text-white">2. Choose a Subject for Mock Test</h3>
+            </div>
+            <div id="subjectGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Subject cards rendered from js/data.js -->
+            </div>
+
+            <!-- Mixed Mock Test -->
+            <div class="card-army mt-5 flex flex-col md:flex-row md:items-center justify-between gap-4" style="border-top-color: var(--gold);">
+                <div>
+                    <span class="dogtag gold">⚔️ Full Mock Drill</span>
+                    <h4 class="font-display text-xl text-white mt-3">Mixed Mock Test — 20 Questions</h4>
+                    <p class="text-[#a9ad97] text-sm mt-1">4 questions from each of the 5 subjects, shuffled like a real one-paper test. The closest thing to exam day.</p>
+                </div>
+                <button onclick="startMixedQuiz()" class="btn-gold whitespace-nowrap">Start Mixed Mock →</button>
+            </div>
+        </section>
+
+        <!-- Per-subject accuracy + weak areas -->
+        <section class="card-army">
+            <div class="section-head mb-4">
+                <span class="rank-mark">❯❯❯</span>
+                <h3 class="font-display text-lg text-white">Subject-Wise Accuracy</h3>
+            </div>
+            <div id="accuracyContainer" class="space-y-4">
+                <p class="text-sm text-[#a9ad97]">No tests attempted yet. Your per-subject accuracy bars will appear here after your first test.</p>
+            </div>
+            <div id="weakAreaBox" class="notice-amber mt-5 hidden"></div>
+        </section>
+
+        <!-- Step 3: AI Custom Quiz Generator -->
+        <section class="card-army" style="border-top-color: var(--gold);">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">✨</span>
+                <h3 class="font-display text-xl text-gold">AI Custom Topic Quiz Generator</h3>
+            </div>
+            <p class="text-[#cfd2bd] text-sm mt-1">
+                Koi specific topic tayyar karna hai? Neeche topic likhein (ya quick tag select karein) aur quiz foran tayyar ho jayega.
+                8 topics built-in bank mein hain — baaki topics par mixed practice questions milenge.
+            </p>
+            <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                <input id="aiTopicInput" type="text" placeholder="e.g., 1973 Constitution, Mughal Empire, Solar System, UNO..."
+                    class="input-army flex-1" />
+                <button onclick="startAIQuiz()" class="btn-gold whitespace-nowrap">
+                    Generate AI Quiz 🚀
+                </button>
+            </div>
+            <!-- Quick Topic Suggestions (rendered from js/data.js) -->
+            <div id="aiTopicChips" class="mt-3 flex flex-wrap gap-2 items-center text-xs text-[#a9ad97]">
+                <span>Quick Topics:</span>
+            </div>
+        </section>
+
+        <!-- Step 4: Recent Test History -->
+        <section class="card-army">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-display text-lg text-white">📊 Recent Test History</h3>
+                <button onclick="clearHistory()" class="btn-danger-ghost">Reset Stats</button>
+            </div>
+            <div id="historyContainer" class="text-sm text-[#a9ad97]">
+                No tests attempted yet. Start any quiz above to see your performance history!
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-army text-center py-6 text-sm text-khaki/70 mt-10">
+        <p>© 2026 CadetToCSP — PPSC &amp; Armed Forces Test Portal</p>
+    </footer>
+
+    <!-- Dashboard Interactive Script -->
+    <script>
+        let currentMode = localStorage.getItem('examMode') || 'PPSC';
+        const subjects = window.CADET_SUBJECTS || [];
+        const aiTopics = Object.keys(window.CADET_AI_TOPIC_BANK || {});
+
+        window.onload = () => {
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+                document.getElementById('aspirantNameDisplay').textContent = savedName;
+                document.getElementById('welcomeName').textContent = savedName.split(' ')[0];
+            }
+
+            renderSubjects();
+            renderAiChips();
+            setExamMode(currentMode);
+            loadDashboardStats();
+            loadStreak();
+        };
+
+        function renderSubjects() {
+            const grid = document.getElementById('subjectGrid');
+            const bank = window.CADET_QUESTION_BANK || {};
+            grid.innerHTML = subjects.map(s => {
+                const count = (bank[s.key] || []).length;
+                return `
+                <div class="card-army flex flex-col justify-between hover:!border-[#6f7d33] transition">
+                    <div>
+                        <span class="text-3xl">${s.icon}</span>
+                        <h4 class="font-display text-lg text-white mt-3">${s.name}</h4>
+                        <p class="text-[#a9ad97] text-sm mt-2">${s.tagline}</p>
+                        <p class="mt-3"><span class="kbd-chip">${count} MCQs in bank</span></p>
+                    </div>
+                    <button onclick="startCategoryQuiz('${s.key}')" class="btn-gold w-full mt-6 !py-2.5">
+                        Start Quiz →
+                    </button>
+                </div>`;
+            }).join('');
+        }
+
+        function renderAiChips() {
+            const wrap = document.getElementById('aiTopicChips');
+            aiTopics.forEach(t => {
+                const b = document.createElement('button');
+                b.className = "bg-[#33362a] hover:bg-[#3f4a1f] border border-[#4a4d3d] px-2.5 py-1 rounded-md text-[#cfd2bd]";
+                b.textContent = t;
+                b.onclick = () => fillTopic(t);
+                wrap.appendChild(b);
+            });
+        }
+
+        function setExamMode(mode) {
+            currentMode = mode;
+            const btnPPSC = document.getElementById('btnPPSC');
+            const btnArmy = document.getElementById('btnArmy');
+            const tagPPSC = document.getElementById('tagPPSC');
+            const tagArmy = document.getElementById('tagArmy');
+            const badge = document.getElementById('activeModeBadge');
+
+            if (mode === 'PPSC') {
+                btnPPSC.classList.add('active');
+                btnArmy.classList.remove('active');
+                tagPPSC.classList.remove('hidden');
+                tagArmy.classList.add('hidden');
+                badge.textContent = "Mode: PPSC (−0.25 Negative Marking)";
+            } else {
+                btnArmy.classList.add('active');
+                btnPPSC.classList.remove('active');
+                tagArmy.classList.remove('hidden');
+                tagPPSC.classList.add('hidden');
+                badge.textContent = "Mode: Armed Forces (No Negative Marking)";
+            }
+            localStorage.setItem('examMode', mode);
+        }
+
+        function fillTopic(topic) {
+            document.getElementById('aiTopicInput').value = topic;
+        }
+
+        function startCategoryQuiz(subject) {
+            localStorage.setItem('quizType', 'CATEGORY');
+            localStorage.setItem('selectedSubject', subject);
+            localStorage.setItem('examMode', currentMode);
+            window.location.href = 'quiz.html';
+        }
+
+        function startMixedQuiz() {
+            localStorage.setItem('quizType', 'MIXED');
+            localStorage.setItem('examMode', currentMode);
+            window.location.href = 'quiz.html';
+        }
+
+        function startAIQuiz() {
+            const topic = document.getElementById('aiTopicInput').value.trim();
+            if (!topic) {
+                alert("Please enter or select a topic first!");
+                return;
+            }
+            localStorage.setItem('quizType', 'AI');
+            localStorage.setItem('aiCustomTopic', topic);
+            localStorage.setItem('examMode', currentMode);
+            window.location.href = 'quiz.html';
+        }
+
+        function loadStreak() {
+            let streak = { lastDate: null, count: 0 };
+            try { streak = JSON.parse(localStorage.getItem('cadetStreak') || 'null') || streak; } catch (e) { /* ignore */ }
+            document.getElementById('streakCount').textContent = streak.count || 0;
+            const sub = document.getElementById('streakSub');
+            if (streak.count > 0 && streak.lastDate) {
+                sub.textContent = `Last active: ${streak.lastDate} • Keep it alive — test again tomorrow`;
+            }
+        }
+
+        function loadDashboardStats() {
+            const history = JSON.parse(localStorage.getItem('testHistory') || '[]');
+            document.getElementById('statTotalTests').textContent = history.length;
+
+            if (history.length > 0) {
+                const avgAcc = Math.round(history.reduce((sum, item) => sum + item.accuracy, 0) / history.length);
+                document.getElementById('statAvgAccuracy').textContent = `${avgAcc}%`;
+                const last = history[0];
+                document.getElementById('statLastScore').textContent = `${last.netScore} / ${last.total} (${last.subject})`;
+                document.getElementById('statTotalQs').textContent = history.reduce((sum, item) => sum + (item.total || 0), 0);
+
+                const container = document.getElementById('historyContainer');
+                container.innerHTML = history.slice(0, 5).map(item => `
+                    <div class="flex justify-between items-center py-2.5 border-b border-[#33362a] last:border-none flex-wrap gap-2">
+                        <div>
+                            <span class="font-semibold text-white">${item.subject}</span>
+                            <span class="ml-2 text-xs bg-[#33362a] text-[#cfd2bd] px-2 py-0.5 rounded">${item.mode}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold" style="color: var(--gold-light);">Score: ${item.netScore}/${item.total}</span>
+                            <span class="text-xs text-[#8a8f7c] ml-3">${item.date}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderAccuracy(history);
+        }
+
+        function renderAccuracy(history) {
+            const container = document.getElementById('accuracyContainer');
+            const weakBox = document.getElementById('weakAreaBox');
+            if (!history.length) return;
+
+            // Aggregate per subject: weighted accuracy from correct/total.
+            const perSubject = {};
+            subjects.forEach(s => { perSubject[s.key] = { correct: 0, total: 0, tests: 0 }; });
+            history.forEach(item => {
+                const entry = perSubject[item.subject];
+                if (!entry) return; // AI topics & mixed mock are not single subjects
+                const total = item.total || 0;
+                const correct = (typeof item.correct === 'number')
+                    ? item.correct
+                    : Math.round((item.accuracy || 0) * total / 100);
+                entry.correct += correct;
+                entry.total += total;
+                entry.tests += 1;
+            });
+
+            container.innerHTML = subjects.map(s => {
+                const e = perSubject[s.key];
+                if (!e.tests) {
+                    return `
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-white font-semibold">${s.icon} ${s.name}</span>
+                            <span class="text-[#8a8f7c]">Not attempted yet</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" style="width: 0%"></div></div>
+                    </div>`;
+                }
+                const pct = e.total ? Math.round(e.correct / e.total * 100) : 0;
+                const cls = pct < 60 ? 'bar-fill weak' : 'bar-fill strong';
+                return `
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-white font-semibold">${s.icon} ${s.name}</span>
+                        <span class="${pct < 60 ? 'text-amber-400' : 'text-white'} font-bold">${pct}% • ${e.tests} test(s)</span>
+                    </div>
+                    <div class="bar-track"><div class="${cls}" style="width: ${pct}%"></div></div>
+                </div>`;
+            }).join('');
+
+            // Weak-area hints: any attempted subject under 60% accuracy.
+            const weak = subjects.filter(s => {
+                const e = perSubject[s.key];
+                return e.tests > 0 && e.total > 0 && (e.correct / e.total * 100) < 60;
+            });
+            if (weak.length) {
+                weakBox.classList.remove('hidden');
+                weakBox.innerHTML = `<strong>🎯 Weak-area alert:</strong> ` + weak.map(s => {
+                    const e = perSubject[s.key];
+                    const pct = Math.round(e.correct / e.total * 100);
+                    return `${s.name} (${pct}%)`;
+                }).join(' • ') + ` — revise these topics first, then retry their quizzes.`;
+            } else {
+                weakBox.classList.add('hidden');
+            }
+        }
+
+        function clearHistory() {
+            if (!window.confirm("Reset all test history and stats? This cannot be undone.")) return;
+            localStorage.removeItem('testHistory');
+            location.reload();
+        }
+    </script>
+</body>
+</html>

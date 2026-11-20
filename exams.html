@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Patterns &amp; Syllabus — CadetToCSP</title>
+    <meta name="description" content="Real exam patterns for PPSC one-paper tests, FPSC CSS, PMA Long Course, PAF and Pakistan Navy initial tests — eligibility, paper pattern and marking.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
+                        gold: '#c9a227',
+                        khaki: '#c3b091',
+                        charcoal: '#1c1e1a',
+                        paper: '#f4f1e6'
+                    },
+                    fontFamily: {
+                        display: ['"Saira Stencil One"', 'cursive'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="paper-light font-body min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="nav-army sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 py-3.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2.5">
+                <span class="logo-badge">CC</span>
+                <span class="logo-word text-white">CadetTo<span class="gold">CSP</span></span>
+            </a>
+            <div class="hidden md:flex items-center space-x-7">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="exams.html" class="nav-link active">Exam Patterns</a>
+                <a href="index.html#subjects" class="nav-link">Subjects</a>
+                <a href="index.html#roadmap" class="nav-link">Cadet → CSP</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+            </div>
+            <a href="auth.html" class="btn-gold !py-2.5 !px-5 text-sm">Start Portal →</a>
+        </div>
+        <div class="chevron-strip thin"></div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-olive-950 text-white">
+        <div class="max-w-6xl mx-auto px-6 py-14">
+            <span class="dogtag gold">Field Manual</span>
+            <h1 class="font-display text-3xl md:text-5xl mt-4">Exam Patterns &amp; Syllabus</h1>
+            <p class="text-khaki max-w-2xl mt-3 leading-relaxed">Know the battlefield before you fight on it. Patterns, eligibility and marking for every exam this portal prepares you for — based on the published patterns of PPSC, FPSC and the Armed Forces.</p>
+            <p class="text-xs text-khaki/70 mt-4">⚠ Patterns and eligibility rules change. Always confirm the latest details from the official advertisement (PPSC / FPSC / joinpakarmy.gov.pk / joinpaf.gov.pk / joinpaknavy.gov.pk) before applying.</p>
+        </div>
+        <div class="chevron-strip"></div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 space-y-14 flex-1 w-full">
+
+        <!-- Comparison table -->
+        <section>
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">At a Glance</h2>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-[--line] bg-white shadow-sm">
+                <table class="table-army">
+                    <thead>
+                        <tr><th>Exam</th><th>Paper</th><th>Negative Marking</th><th>What Decides Merit</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="font-bold">PPSC One-Paper</td><td>100 MCQs (one paper)</td><td>−0.25 per wrong answer</td><td>MCQ score, then interview</td></tr>
+                        <tr><td class="font-bold">FPSC CSS</td><td>Written 1,200 marks + 300 interview</td><td>Written papers are descriptive (no negative marking)</td><td>Written + interview, 1,500 total</td></tr>
+                        <tr><td class="font-bold">PMA Long Course</td><td>Initial written + intelligence test, then ISSB</td><td>No negative marking in initial test</td><td>Initial test → ISSB → medical → final selection</td></tr>
+                        <tr><td class="font-bold">PAF (GD(P) &amp; others)</td><td>Intelligence + academic initial test, then ISSB / interviews</td><td>No negative marking in initial test</td><td>Initial test → ISSB → medical → final merit</td></tr>
+                        <tr><td class="font-bold">Pakistan Navy (PN Cadet)</td><td>Intelligence + academic initial test, then ISSB</td><td>No negative marking in initial test</td><td>Initial test → ISSB → medical → final selection</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PPSC -->
+        <section id="ppsc">
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">PPSC One-Paper Tests</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card-paper">
+                    <h3 class="text-lg">Paper Pattern</h3>
+                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                        <li><strong>100 MCQs</strong> in a single paper (commonly around 90 minutes).</li>
+                        <li><strong>+1 mark</strong> for each correct answer, <strong>−0.25</strong> for each wrong answer; skipped questions score 0.</li>
+                        <li>Typical mix: English, General Knowledge, Pakistan Studies, Islamiat, Everyday Science, Current Affairs, basic Mathematics and Computer — proportions vary by post.</li>
+                        <li>Shortlisted candidates are called for interview; final merit combines written + interview marks.</li>
+                    </ul>
+                </div>
+                <div class="card-paper">
+                    <h3 class="text-lg">Eligibility (General)</h3>
+                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                        <li>Education and age limits are set <strong>per post</strong> in each advertisement — most posts require at least a bachelor's degree.</li>
+                        <li>Domicile of Punjab is generally required for PPSC posts.</li>
+                        <li>Age relaxation rules (for government servants, minorities, etc.) are announced in the advertisement.</li>
+                    </ul>
+                    <p class="text-sm mt-4"><span class="kbd-chip">Practice here: PPSC Mode</span> — 60s per question, −0.25 marking, Mixed Mock Test of 20 questions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FPSC CSS -->
+        <section id="css">
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">FPSC — CSS Competitive Examination</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card-paper">
+                    <h3 class="text-lg">Written Examination — 1,200 Marks</h3>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="table-army">
+                            <thead><tr><th>Compulsory Subject</th><th>Marks</th></tr></thead>
+                            <tbody>
+                                <tr><td>English (Essay)</td><td>100</td></tr>
+                                <tr><td>English (Précis &amp; Composition)</td><td>100</td></tr>
+                                <tr><td>General Science &amp; Ability</td><td>100</td></tr>
+                                <tr><td>Current Affairs</td><td>100</td></tr>
+                                <tr><td>Pakistan Affairs</td><td>100</td></tr>
+                                <tr><td>Islamiat</td><td>100</td></tr>
+                                <tr><td><strong>Compulsory total</strong></td><td><strong>600</strong></td></tr>
+                                <tr><td>Optional subjects (candidate's choice)</td><td>600</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">After the written exam, qualifying candidates face a <strong>300-mark interview</strong> (viva voce) plus psychological assessment — 1,500 marks in total.</p>
+                </div>
+                <div class="card-paper">
+                    <h3 class="text-lg">Eligibility &amp; Qualifying Marks</h3>
+                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                        <li>A <strong>bachelor's degree (second division)</strong> from a recognized university.</li>
+                        <li>Age generally <strong>21 to 30 years</strong>, with relaxation under the rules for specified categories.</li>
+                        <li>To qualify for the interview, candidates generally need at least <strong>40% in compulsory subjects</strong> and <strong>33% in optional subjects</strong>.</li>
+                        <li>The MCQ foundation on this portal (Current Affairs, Pakistan Affairs, Everyday Science, English, Islamiat) maps directly onto the compulsory papers.</li>
+                    </ul>
+                    <p class="text-sm mt-4"><span class="kbd-chip">Practice here: all 5 subjects + AI topics</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PMA -->
+        <section id="pma">
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">PMA Long Course — Pakistan Army</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card-paper">
+                    <h3 class="text-lg">Selection Stages</h3>
+                    <ol class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-decimal pl-5">
+                        <li><strong>Initial test</strong> at Army Selection &amp; Recruitment Centres (AS&amp;RCs) — written / intelligence test plus academic MCQs (English, Maths, Islamiat, Pak Studies, General Knowledge).</li>
+                        <li><strong>ISSB</strong> — 4–5 days of psychological, group and interview testing.</li>
+                        <li><strong>Medical examination</strong> and final selection on merit.</li>
+                        <li>Training at the <strong>Pakistan Military Academy, Kakul</strong> (two-year course).</li>
+                    </ol>
+                </div>
+                <div class="card-paper">
+                    <h3 class="text-lg">Eligibility (General)</h3>
+                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                        <li>Unmarried male citizens of Pakistan.</li>
+                        <li>Age generally <strong>17–22 years</strong> for intermediate-qualified candidates, with a higher limit for graduates.</li>
+                        <li>Minimum education: <strong>FA / FSc or equivalent</strong>; higher qualifications are accepted per the advertisement.</li>
+                        <li>Physical and medical standards apply as per the induction rules.</li>
+                    </ul>
+                    <p class="text-sm mt-4"><span class="kbd-chip">Practice here: Armed Forces Mode</span> — 30s per question, no negative marking.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAF & Navy -->
+        <section id="paf-navy">
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">PAF &amp; Pakistan Navy Initial Tests</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card-paper">
+                    <h3 class="text-lg">✈️ Pakistan Air Force</h3>
+                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                        <li>Courses include <strong>GD(P)</strong> (General Duty Pilot), Aeronautical Engineering, Air Defence, Admin &amp; Special Duties, Logistics and others — each with its own education requirement.</li>
+                        <li>Initial test: <strong>intelligence test</strong> plus <strong>academic test</strong> (English, Physics, Maths as per course), followed by ISSB / interviews and medical.</li>
+                        <li>GD(P) generally requires FSc (Pre-Engineering / Pre-Medical / Computer Science) — confirm per course in the advertisement.</li>
+                    </ul>
+                </div>
+                <div class="card-paper">
+                    <h3 class="text-lg">⚓ Pakistan Navy — PN Cadet</h3>
+                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                        <li>PN Cadet course: initial <strong>intelligence + academic test</strong> (English, Maths, Physics, General Knowledge), then ISSB, medical and final selection.</li>
+                        <li>Training at the <strong>Pakistan Naval Academy</strong>; branches include Operations, Marine Engineering, Supply and others.</li>
+                        <li>Education and age criteria are announced per course — typically FSc (Pre-Engineering) for PN Cadet.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- How the portal maps -->
+        <section>
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">How This Portal Maps to the Exams</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5">
+                <div class="card-paper"><h3 class="text-lg">PPSC / FPSC Mode</h3><p class="text-sm text-[#4c4f42] mt-2 leading-relaxed">60 seconds per question and −0.25 negative marking — the exact one-paper rules. Use Mixed Mock Tests to simulate a paper.</p></div>
+                <div class="card-paper"><h3 class="text-lg">Armed Forces Mode</h3><p class="text-sm text-[#4c4f42] mt-2 leading-relaxed">30 seconds per question and no negative marking — the speed discipline of initial tests at AS&amp;RCs and PAF/Navy centres.</p></div>
+                <div class="card-paper"><h3 class="text-lg">AI Topic Quizzes</h3><p class="text-sm text-[#4c4f42] mt-2 leading-relaxed">Weak in one area? Drill a single topic — 1973 Constitution, Mughal Empire, Pakistan Movement, Islamic History, Geography of Pakistan and more.</p></div>
+            </div>
+            <div class="mt-8 text-center">
+                <a href="auth.html" class="btn-gold text-lg">Start Practising →</a>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section>
+            <div class="section-head mb-5">
+                <span class="rank-mark">❯❯❯</span>
+                <h2 class="font-display text-2xl text-olive-900">Common Questions</h2>
+            </div>
+            <div class="space-y-4 max-w-3xl">
+                <details class="faq">
+                    <summary>Is negative marking the same in every PPSC paper?</summary>
+                    <p>No — it is announced per advertisement, but the standard one-paper rule is −0.25 per wrong answer. This portal trains you on that standard rule; always read the specific advertisement.</p>
+                </details>
+                <details class="faq">
+                    <summary>Do Armed Forces initial tests have negative marking?</summary>
+                    <p>No. The initial written/intelligence tests of the Army, PAF and Navy do not carry negative marking — so attempting every question is the right strategy. That is why Armed Forces mode on this portal has no penalty.</p>
+                </details>
+                <details class="faq">
+                    <summary>Can MCQ practice help for CSS, which is a descriptive exam?</summary>
+                    <p>Yes — for the compulsory papers. Current Affairs, Pakistan Affairs, General Science &amp; Ability and Islamiat all reward the same factual base that MCQs drill. Essay and précis need separate written practice.</p>
+                </details>
+                <details class="faq">
+                    <summary>Are the eligibility details on this page final?</summary>
+                    <p>No. Age limits, education requirements and course details change with each induction cycle. This page follows the widely published patterns; the official advertisement is always final.</p>
+                </details>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-army mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8 text-sm">
+            <div>
+                <div class="flex items-center space-x-2.5">
+                    <span class="logo-badge">CC</span>
+                    <span class="logo-word text-white">CadetTo<span class="gold">CSP</span></span>
+                </div>
+                <p class="text-khaki/80 mt-3 leading-relaxed">A free, static practice portal for Pakistani competitive exams — PPSC, FPSC, Armed Forces initial tests and the road to CSS.</p>
+            </div>
+            <div>
+                <p class="eyebrow mb-3" style="color: var(--gold);">Portal</p>
+                <ul class="space-y-2">
+                    <li><a href="dashboard.html" class="hover:text-white">Dashboard</a></li>
+                    <li><a href="exams.html" class="hover:text-white">Exam Patterns &amp; Syllabus</a></li>
+                    <li><a href="auth.html" class="hover:text-white">Login / Guest Demo</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="eyebrow mb-3" style="color: var(--gold);">Note</p>
+                <p class="text-khaki/80 leading-relaxed">CadetToCSP is an independent practice tool. It is not affiliated with PPSC, FPSC, Pakistan Army, PAF or Pakistan Navy. Exam patterns change — always confirm eligibility and syllabi from the official advertisements.</p>
+            </div>
+        </div>
+        <div class="border-t border-olive-800 text-center py-4 text-xs text-khaki/70">
+            © 2026 CadetToCSP — Built for Competitive Exam Aspirants
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Test — CadetToCSP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
+                        gold: '#c9a227',
+                        khaki: '#c3b091',
+                        charcoal: '#1c1e1a',
+                        paper: '#f4f1e6'
+                    },
+                    fontFamily: {
+                        display: ['"Saira Stencil One"', 'cursive'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/data.js"></script>
+</head>
+<body class="ops-dark font-body min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <nav class="nav-army">
+        <div class="max-w-6xl mx-auto px-6 py-3.5 flex justify-between items-center gap-3 flex-wrap">
+            <div class="flex items-center space-x-3">
+                <span class="logo-badge">CC</span>
+                <div>
+                    <h1 class="font-display text-lg leading-none text-white">CadetTo<span class="text-gold">CSP</span></h1>
+                    <p id="quizSubHeader" class="text-xs text-khaki mt-1">Loading Test...</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3 flex-wrap">
+                <div class="timer-box" title="Total time elapsed">
+                    <span class="text-gold">⏱</span>
+                    <span class="text-xs text-[#a9ad97] font-semibold">ELAPSED</span>
+                    <span id="elapsedText" class="font-mono font-bold">00:00</span>
+                </div>
+                <div id="timerBox" class="timer-box" title="Time left for this question">
+                    <span>⏳</span>
+                    <span id="timerText" class="font-mono font-bold text-lg">60s</span>
+                </div>
+                <a href="exams.html" class="text-sm text-khaki hover:text-white font-medium transition">Exam Patterns</a>
+                <button onclick="exitTest()" class="text-sm text-[#a9ad97] hover:text-red-400 font-medium transition">Exit Test ✕</button>
+            </div>
+        </div>
+        <div class="chevron-strip thin"></div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl w-full mx-auto px-6 py-8 flex-1">
+
+        <!-- TEST SETUP SCREEN -->
+        <div id="setupBox" class="max-w-2xl mx-auto card-army !p-8 text-center">
+            <span class="dogtag gold">Mission Briefing</span>
+            <h2 id="setupTitle" class="font-display text-2xl md:text-3xl text-white mt-4">Loading test...</h2>
+            <p id="setupModeLine" class="text-[#a9ad97] text-sm mt-2 leading-relaxed"></p>
+
+            <div id="countRow" class="mt-6">
+                <p class="label-army !text-center">How many questions?</p>
+                <div class="flex justify-center gap-3">
+                    <button class="count-btn" data-count="5" onclick="setQuestionCount(5, this)">5</button>
+                    <button class="count-btn selected" data-count="10" onclick="setQuestionCount(10, this)">10</button>
+                    <button class="count-btn" data-count="15" onclick="setQuestionCount(15, this)">15</button>
+                </div>
+            </div>
+            <p id="countNote" class="text-xs text-[#8a8f7c] mt-3"></p>
+
+            <div class="notice-olive mt-6 text-left">
+                <strong>Rules of engagement:</strong>
+                <span id="setupRules">Questions are shuffled. You can jump between questions with the palette, mark doubtful ones for review, and skip safely (0 marks). Confirm before submitting — unanswered questions count as skipped.</span>
+            </div>
+
+            <button id="startTestBtn" onclick="startTest()" class="btn-gold w-full mt-6 text-lg">Start Test →</button>
+            <a href="dashboard.html" class="inline-block mt-4 text-sm text-[#a9ad97] hover:text-white">← Back to Dashboard</a>
+        </div>
+
+        <!-- AI LOADING SCREEN (Hidden by default) -->
+        <div id="loadingBox" class="hidden max-w-2xl mx-auto card-army !p-10 text-center space-y-4">
+            <div class="animate-spin w-12 h-12 border-4 rounded-full mx-auto" style="border-color: var(--gold); border-top-color: transparent;"></div>
+            <h2 class="font-display text-2xl text-gold">Generating Custom AI MCQs...</h2>
+            <p id="loadingTopicText" class="text-[#a9ad97] text-sm">Preparing PPSC &amp; Armed Forces standard questions with explanations.</p>
+        </div>
+
+        <!-- QUIZ + PALETTE LAYOUT -->
+        <div class="lg:grid lg:grid-cols-[1fr_280px] lg:gap-6 items-start">
+
+            <!-- QUIZ ACTIVE SCREEN -->
+            <div id="quizBox" class="hidden card-army !p-6 md:!p-8 shadow-xl">
+                <!-- Honest AI fallback notice -->
+                <div id="aiNotice" class="notice-amber hidden mb-5">
+                    ⚠ <strong>This topic isn't in the built-in bank yet</strong> — practising mixed questions from all subjects instead. Add the topic to the bank or set a Gemini API key for live generation.
+                </div>
+
+                <!-- Progress Info -->
+                <div class="flex justify-between items-center text-sm text-[#a9ad97] mb-2 flex-wrap gap-2">
+                    <span id="questionCounter" class="font-semibold text-white">Question 1 of 5</span>
+                    <span id="markingRuleBadge" class="text-amber-400 font-medium">PPSC Rule: +1.00 | −0.25</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="bar-track mb-6">
+                    <div id="progressBar" class="bar-fill" style="width: 20%"></div>
+                </div>
+
+                <!-- Question Text -->
+                <h2 id="questionText" class="text-xl md:text-2xl font-bold leading-relaxed mb-6 text-white">
+                    Loading question...
+                </h2>
+
+                <!-- Options Container -->
+                <div id="optionsContainer" class="space-y-3">
+                    <!-- Options injected via JS -->
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="mt-8 pt-6 border-t border-[#33362a] flex flex-wrap justify-between items-center gap-3">
+                    <div class="flex gap-2 flex-wrap">
+                        <button id="prevBtn" onclick="prevQuestion()" class="btn-outline !py-2.5 !px-4 text-sm !text-white">← Previous</button>
+                        <button id="markBtn" onclick="toggleMarkForReview()" class="btn-outline !py-2.5 !px-4 text-sm !text-amber-300">☆ Mark for Review</button>
+                    </div>
+                    <div class="flex gap-2 flex-wrap items-center">
+                        <button onclick="skipQuestion()" class="text-[#a9ad97] hover:text-white text-sm font-medium transition px-2">
+                            Skip (0.00) →
+                        </button>
+                        <button id="nextBtn" onclick="nextQuestion()" disabled
+                            class="btn-gold !py-2.5 !px-6 disabled:!bg-[#555] disabled:!text-[#999] disabled:!border-[#444] disabled:cursor-not-allowed">
+                            Next Question →
+                        </button>
+                        <button id="submitBtn" onclick="confirmSubmit()" class="btn-gold !py-2.5 !px-6 hidden">Submit Test ✓</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUESTION PALETTE -->
+            <aside id="palettePanel" class="hidden card-army !p-5 mt-6 lg:mt-0 lg:sticky lg:top-24">
+                <h3 class="font-display text-base text-white">Question Palette</h3>
+                <p class="text-xs text-[#8a8f7c] mt-0.5"><span id="totalQLabel">0</span> questions • click a number to jump</p>
+                <div id="paletteGrid" class="grid grid-cols-5 gap-2 mt-4"></div>
+                <p id="paletteSummary" class="text-xs text-[#a9ad97] mt-4">0 answered • 0 marked • 0 remaining</p>
+                <div class="mt-4 pt-4 border-t border-[#33362a] space-y-2 text-xs text-[#a9ad97]">
+                    <p><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1" style="background: var(--olive-700);"></span> Answered</p>
+                    <p><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1 border-2 border-dashed border-[#8a8f7c]"></span> Skipped</p>
+                    <p><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1" style="border: 2px solid #d98e2b;"></span> Marked for review</p>
+                    <p><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1" style="border: 2px solid var(--gold);"></span> Current question</p>
+                </div>
+                <button onclick="confirmSubmit()" class="btn-gold w-full mt-5 !py-2.5 text-sm">Submit Test ✓</button>
+            </aside>
+        </div>
+
+        <!-- RESULT SCREEN (Hidden Initially) -->
+        <div id="resultBox" class="hidden space-y-8 max-w-4xl mx-auto">
+            <div class="card-army !p-8 text-center shadow-xl">
+                <span class="text-4xl">🏆</span>
+                <h2 class="font-display text-3xl mt-2 text-white">Test Completed!</h2>
+                <p id="resultModeSub" class="text-[#a9ad97] text-sm mt-1"></p>
+
+                <!-- Score Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl">
+                        <p class="text-xs text-[#a9ad97]">Correct (+1)</p>
+                        <p id="resCorrect" class="text-2xl font-bold text-[#e3c766] mt-1">0</p>
+                    </div>
+                    <div class="bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl">
+                        <p class="text-xs text-[#a9ad97]">Wrong</p>
+                        <p id="resWrong" class="text-2xl font-bold text-red-400 mt-1">0</p>
+                    </div>
+                    <div class="bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl">
+                        <p class="text-xs text-[#a9ad97]">Skipped</p>
+                        <p id="resSkipped" class="text-2xl font-bold text-white mt-1">0</p>
+                    </div>
+                    <div class="bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl">
+                        <p class="text-xs text-[#a9ad97]">Negative Penalty</p>
+                        <p id="resPenalty" class="text-2xl font-bold text-amber-400 mt-1">−0.00</p>
+                    </div>
+                    <div class="bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl">
+                        <p class="text-xs text-[#a9ad97]">Accuracy</p>
+                        <p id="resAccuracy" class="text-2xl font-bold text-white mt-1">0%</p>
+                    </div>
+                    <div class="bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl">
+                        <p class="text-xs text-[#a9ad97]">Time Taken</p>
+                        <p id="resTime" class="text-2xl font-bold text-white mt-1">00:00</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 rounded-xl p-4 text-center" style="background: rgba(201,162,39,.12); border: 1px solid rgba(201,162,39,.4);">
+                    <p class="text-xs text-gold">Final Net Score</p>
+                    <p id="resFinalScore" class="text-3xl font-display text-gold mt-1">0 / 5</p>
+                </div>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <a href="dashboard.html" class="btn-gold">
+                        ← Back to Dashboard (View Updated Stats)
+                    </a>
+                    <button onclick="retryTest()" class="btn-outline !text-white">Retry Test 🔄</button>
+                </div>
+            </div>
+
+            <!-- Answer Key & Explanations -->
+            <div class="card-army !p-6">
+                <h3 class="font-display text-xl text-white mb-4">📘 Detailed Answer Review &amp; Explanations</h3>
+                <div id="reviewContainer" class="space-y-4">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-army text-center py-5 text-xs text-khaki/70">
+        <p>© 2026 CadetToCSP — Automated Exam Engine</p>
+    </footer>
+
+    <script src="js/quiz.js"></script>
+</body>
+</html>

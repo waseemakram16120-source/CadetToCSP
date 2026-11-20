@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — CadetToCSP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
+                        gold: '#c9a227',
+                        khaki: '#c3b091',
+                        charcoal: '#1c1e1a',
+                        paper: '#f4f1e6'
+                    },
+                    fontFamily: {
+                        display: ['"Saira Stencil One"', 'cursive'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="ops-dark font-body min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="nav-army">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 py-3.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2.5">
+                <span class="logo-badge">CC</span>
+                <span class="logo-word text-white">CadetTo<span class="gold">CSP</span></span>
+            </a>
+            <div class="hidden md:flex items-center space-x-7">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="exams.html" class="nav-link">Exam Patterns</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+            </div>
+            <a href="index.html" class="text-khaki hover:text-white text-sm font-semibold transition">← Back to Home</a>
+        </div>
+        <div class="chevron-strip thin"></div>
+    </nav>
+
+    <!-- Main Auth Card -->
+    <main class="max-w-md w-full mx-auto px-6 py-10 flex-1 flex flex-col justify-center">
+        <div class="card-army !p-8 shadow-2xl">
+
+            <div class="text-center mb-6">
+                <span class="dogtag gold">Secure Aspirant Portal</span>
+                <h2 id="authTitle" class="font-display text-2xl mt-4 text-white">Sign in to your account</h2>
+                <p id="authSubtitle" class="text-[#a9ad97] text-sm mt-1">Prepare for PPSC &amp; Armed Forces tests</p>
+            </div>
+
+            <!-- Form -->
+            <form onsubmit="handleAuth(event)" class="space-y-4">
+                <div id="nameFieldBox" class="hidden">
+                    <label class="label-army" for="userName">Full Name / Rank</label>
+                    <input id="userName" type="text" placeholder="e.g., Muhammad Ali (Aspirant)"
+                        class="input-army" />
+                </div>
+
+                <div>
+                    <label class="label-army" for="userEmail">Email Address</label>
+                    <input id="userEmail" type="email" required placeholder="aspirant@gmail.com"
+                        class="input-army" />
+                </div>
+
+                <div>
+                    <label class="label-army" for="userPassword">Password</label>
+                    <input id="userPassword" type="password" required placeholder="••••••••"
+                        class="input-army" />
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-gold w-full">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="relative my-6 text-center">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#33362a]"></div></div>
+                <span class="relative px-3 text-xs text-[#8a8f7c] uppercase" style="background: var(--charcoal-2);">Or quick demo access</span>
+            </div>
+
+            <!-- 1-Click Guest Login -->
+            <button onclick="guestLogin()" class="btn-outline w-full !text-white text-sm flex items-center justify-center space-x-2">
+                <span>⚡ One-Click Recruiter / Guest Login</span>
+            </button>
+
+            <!-- Switch Mode Toggle -->
+            <p class="text-center text-sm text-[#a9ad97] mt-6">
+                <span id="switchText">Don't have an account?</span>
+                <button type="button" onclick="toggleAuthMode(this)" class="text-gold font-semibold hover:underline ml-1">Register</button>
+            </p>
+
+            <!-- Honest storage note -->
+            <div class="notice-olive mt-6 text-xs leading-relaxed">
+                <strong>Demo portal — please note:</strong> accounts on this site are stored only in your own
+                browser (localStorage). There is no server and no real password protection, so do not reuse a
+                password you use anywhere else. Your test history stays on this device only.
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-army text-center py-5 text-xs text-khaki/70">
+        <p>© 2026 CadetToCSP — Authentication Portal</p>
+    </footer>
+
+    <!-- Auth Logic Script -->
+    <script>
+        let isRegisterMode = false;
+
+        // The toggle button is passed explicitly (no reliance on the global `event` object).
+        function toggleAuthMode(btn) {
+            isRegisterMode = !isRegisterMode;
+            const title = document.getElementById('authTitle');
+            const subtitle = document.getElementById('authSubtitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const nameFieldBox = document.getElementById('nameFieldBox');
+            const switchText = document.getElementById('switchText');
+
+            if (isRegisterMode) {
+                title.textContent = "Create an Account";
+                subtitle.textContent = "Start tracking your competitive exam progress";
+                submitBtn.textContent = "Create Account";
+                nameFieldBox.classList.remove('hidden');
+                switchText.textContent = "Already have an account?";
+                btn.textContent = "Sign In";
+            } else {
+                title.textContent = "Sign in to your account";
+                subtitle.textContent = "Prepare for PPSC & Armed Forces tests";
+                submitBtn.textContent = "Sign In";
+                nameFieldBox.classList.add('hidden');
+                switchText.textContent = "Don't have an account?";
+                btn.textContent = "Register";
+            }
+        }
+
+        function handleAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value.trim();
+            const name = isRegisterMode
+                ? document.getElementById('userName').value.trim()
+                : email.split('@')[0];
+
+            // Demo auth: session is kept in localStorage only (no server).
+            localStorage.setItem('userName', name || "Aspirant");
+            localStorage.setItem('userEmail', email);
+
+            window.location.href = 'dashboard.html';
+        }
+
+        function guestLogin() {
+            localStorage.setItem('userName', "Guest Recruiter");
+            localStorage.setItem('userEmail', "recruiter@cadettocsp.com");
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

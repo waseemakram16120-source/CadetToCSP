@@ -29,6 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/data.js"></script>
+    <script src="js/ai.js"></script>
 </head>
 <body class="ops-dark font-body min-h-screen flex flex-col">
 
@@ -165,18 +166,38 @@
         </section>
 
         <!-- Step 3: AI Custom Quiz Generator -->
-        <section class="card-army" style="border-top-color: var(--gold);">
+        <section id="aiQuiz" class="card-army" style="border-top-color: var(--gold);">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl">✨</span>
                 <h3 class="font-display text-xl text-gold">AI Custom Topic Quiz Generator</h3>
             </div>
             <p class="text-[#cfd2bd] text-sm mt-1">
-                Koi specific topic tayyar karna hai? Neeche topic likhein (ya quick tag select karein) aur quiz foran tayyar ho jayega.
-                8 topics built-in bank mein hain — baaki topics par mixed practice questions milenge.
+                Koi specific topic tayyar karna hai? Neeche topic likhein (ya quick tag select karein), difficulty aur question count chunein — quiz foran tayyar ho jayega.
+                <strong class="text-gold">Gemini key saved ho</strong> to kisi bhi topic par fresh questions live generate hote hain; key na ho to 8 built-in topics bank se chalte hain aur baaki topics par mixed practice questions milenge.
             </p>
-            <div class="mt-4 flex flex-col sm:flex-row gap-3">
+            <div class="mt-4">
                 <input id="aiTopicInput" type="text" placeholder="e.g., 1973 Constitution, Mughal Empire, Solar System, UNO..."
                     class="input-army flex-1" />
+            </div>
+            <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="label-army" for="aiDifficultySelect">Difficulty</label>
+                    <select id="aiDifficultySelect" onchange="setAiDifficulty(this)" class="input-army">
+                        <option value="Easy">Easy — direct facts &amp; recall</option>
+                        <option value="Medium" selected>Medium — application &amp; deeper facts</option>
+                        <option value="Hard">Hard — tricky options &amp; close distractors</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label-army">How many questions?</label>
+                    <div id="aiCountRow" class="flex gap-3">
+                        <button class="count-btn selected" data-count="5" onclick="setAiCount(5, this)">5</button>
+                        <button class="count-btn" data-count="10" onclick="setAiCount(10, this)">10</button>
+                        <button class="count-btn" data-count="15" onclick="setAiCount(15, this)">15</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5">
                 <button onclick="startAIQuiz()" class="btn-gold whitespace-nowrap">
                     Generate AI Quiz 🚀
                 </button>
@@ -185,6 +206,28 @@
             <div id="aiTopicChips" class="mt-3 flex flex-wrap gap-2 items-center text-xs text-[#a9ad97]">
                 <span>Quick Topics:</span>
             </div>
+        </section>
+
+        <!-- Gemini API Key (bring your own key) -->
+        <section id="geminiKeySection" class="card-army" style="border-top-color: var(--gold);">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🔑</span>
+                <h3 class="font-display text-xl text-gold">Gemini API Key — Bring Your Own Key (Optional)</h3>
+            </div>
+            <p class="text-[#cfd2bd] text-sm mt-1">
+                Live AI quizzes need your own free Google Gemini key. Paste it below — it stays only in this browser
+                (localStorage) and is sent only to Google's Gemini API. No key is ever stored on any server, and nothing here is shared with anyone.
+                Get a free key from <a href="https://aistudio.google.com" target="_blank" rel="noopener" class="text-gold underline">Google AI Studio</a> (sign in → "Get API key" → "Create API key").
+            </p>
+            <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                <input id="geminiKeyInput" type="password" placeholder="Paste your free Gemini API key here (starts with AIza...)"
+                    class="input-army flex-1" autocomplete="off" />
+                <button onclick="saveGeminiKey()" class="btn-gold whitespace-nowrap">Save Key</button>
+                <button onclick="testGeminiKey()" id="geminiTestBtn" class="btn-outline whitespace-nowrap !text-white">Test Connection</button>
+                <button onclick="removeGeminiKey()" class="btn-danger-ghost whitespace-nowrap">Remove Key</button>
+            </div>
+            <p id="geminiKeyStatus" class="text-sm mt-3 text-[#a9ad97]">No Gemini key saved — AI quizzes use the built-in bank.</p>
+            <p class="text-xs text-[#8a8f7c] mt-2">Free-tier note: Google's free tier allows only a small number of Gemini requests per day, so if you see a quota error, wait until tomorrow or use the built-in bank. Your key is never logged or sent anywhere except Google's Gemini API.</p>
         </section>
 
         <!-- Step 4: Recent Test History -->
@@ -210,6 +253,8 @@
         let currentMode = localStorage.getItem('examMode') || 'PPSC';
         const subjects = window.CADET_SUBJECTS || [];
         const aiTopics = Object.keys(window.CADET_AI_TOPIC_BANK || {});
+        let aiQuizCount = Math.min(15, Math.max(1, parseInt(localStorage.getItem('aiQuizCount') || '5', 10) || 5));
+        let aiQuizDifficulty = localStorage.getItem('aiQuizDifficulty') || 'Medium';
 
         window.onload = () => {
             const savedName = localStorage.getItem('userName');
@@ -220,10 +265,78 @@
 
             renderSubjects();
             renderAiChips();
+            initAiControls();
             setExamMode(currentMode);
             loadDashboardStats();
             loadStreak();
         };
+
+        function initAiControls() {
+            const sel = document.getElementById('aiDifficultySelect');
+            if (sel) sel.value = aiQuizDifficulty;
+            document.querySelectorAll('#aiCountRow .count-btn').forEach(b => {
+                b.classList.toggle('selected', parseInt(b.dataset.count, 10) === aiQuizCount);
+            });
+            updateGeminiKeyStatus();
+        }
+
+        function setAiCount(n, btn) {
+            aiQuizCount = n;
+            localStorage.setItem('aiQuizCount', String(n));
+            document.querySelectorAll('#aiCountRow .count-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function setAiDifficulty(sel) {
+            aiQuizDifficulty = sel.value;
+            localStorage.setItem('aiQuizDifficulty', aiQuizDifficulty);
+        }
+
+        /* ---------- Gemini API key (bring your own key) ---------- */
+        function updateGeminiKeyStatus(msg) {
+            const el = document.getElementById('geminiKeyStatus');
+            if (!el) return;
+            if (msg) { el.textContent = msg; return; }
+            if (window.CadetAI && window.CadetAI.hasApiKey()) {
+                el.textContent = '✓ Gemini key saved in this browser (' + window.CadetAI.maskKey(window.CadetAI.getApiKey()) + '). Live AI generation is on.';
+            } else {
+                el.textContent = 'No Gemini key saved — AI quizzes use the built-in bank.';
+            }
+        }
+
+        function saveGeminiKey() {
+            const input = document.getElementById('geminiKeyInput');
+            const key = (input.value || '').trim();
+            if (!key) { updateGeminiKeyStatus('Please paste a key first.'); return; }
+            if (!window.CadetAI) { updateGeminiKeyStatus('AI module (js/ai.js) failed to load. Reload the page and try again.'); return; }
+            if (!window.CadetAI.saveApiKey(key)) { updateGeminiKeyStatus('Could not save the key — browser storage is unavailable.'); return; }
+            input.value = '';
+            updateGeminiKeyStatus('✓ Key saved in this browser. Use "Test Connection" to check it works.');
+        }
+
+        async function testGeminiKey() {
+            const btn = document.getElementById('geminiTestBtn');
+            if (!window.CadetAI) { updateGeminiKeyStatus('AI module (js/ai.js) failed to load. Reload the page and try again.'); return; }
+            if (!window.CadetAI.hasApiKey()) { updateGeminiKeyStatus('No key saved yet — paste your free Gemini key above and press "Save Key" first.'); return; }
+            btn.disabled = true;
+            updateGeminiKeyStatus('Testing connection to Gemini…');
+            try {
+                await window.CadetAI.testConnection();
+                updateGeminiKeyStatus('✓ Connection OK — Gemini responded. Live AI quizzes are ready.');
+            } catch (err) {
+                updateGeminiKeyStatus('✗ Connection failed — ' + window.CadetAI.friendlyMessage(err));
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function removeGeminiKey() {
+            if (!window.CadetAI) return;
+            if (!window.CadetAI.hasApiKey()) { updateGeminiKeyStatus('No key saved.'); return; }
+            if (!window.confirm('Remove the saved Gemini API key from this browser?')) return;
+            window.CadetAI.removeApiKey();
+            updateGeminiKeyStatus('Key removed. AI quizzes will use the built-in bank.');
+        }
 
         function renderSubjects() {
             const grid = document.getElementById('subjectGrid');
@@ -305,6 +418,8 @@
             }
             localStorage.setItem('quizType', 'AI');
             localStorage.setItem('aiCustomTopic', topic);
+            localStorage.setItem('aiQuizCount', String(aiQuizCount));
+            localStorage.setItem('aiQuizDifficulty', aiQuizDifficulty);
             localStorage.setItem('examMode', currentMode);
             window.location.href = 'quiz.html';
         }

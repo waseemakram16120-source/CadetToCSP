@@ -5,9 +5,9 @@
 // localStorage keys preserved: userName, userEmail, examMode, quizType,
 // selectedSubject, aiCustomTopic, testHistory.
 
-// Optional: paste a free Google Gemini API key here for live AI generation.
-// If left empty, the built-in topic bank in js/data.js is used instead.
-const GEMINI_API_KEY = "";
+// Live AI generation lives in js/ai.js (window.CadetAI).
+// The user's own Gemini API key is stored in localStorage ('geminiApiKey')
+// via the Dashboard settings — never hard-coded here.
 
 // ---------- Banks (from js/data.js) ----------
 const questionBank = window.CADET_QUESTION_BANK || {};
@@ -37,6 +37,9 @@ let elapsedSeconds = 0;
 let testActive = false;
 let questionCount = 10;        // default; selectable 5 / 10 / 15
 let aiFallbackUsed = false;
+let aiErrorMessage = '';       // friendly reason when live generation fails
+let aiQuizCount = Math.min(15, Math.max(1, parseInt(localStorage.getItem('aiQuizCount') || '5', 10) || 5));
+let aiQuizDifficulty = localStorage.getItem('aiQuizDifficulty') || 'Medium';
 
 // ---------- Helpers ----------
 function shuffle(arr) {
@@ -102,8 +105,11 @@ window.onload = () => {
   const countNote = document.getElementById('countNote');
   if (quizType === 'AI') {
     countRow.classList.add('hidden');
-    countNote.textContent = "AI topic bank: 5 questions per topic.";
-    questionCount = 5;
+    questionCount = aiQuizCount; // 5 / 10 / 15, chosen on the Dashboard
+    const keyNote = (window.CadetAI && window.CadetAI.hasApiKey())
+      ? "Live Gemini generation is on — fresh questions will be generated for this topic."
+      : "No Gemini key saved — the built-in bank (8 topics) will be used; other topics get mixed practice questions.";
+    countNote.textContent = `AI quiz: ${questionCount} question(s) requested on "${aiCustomTopic}" (${aiQuizDifficulty}). ${keyNote}`;
   } else if (quizType === 'MIXED') {
     countRow.classList.add('hidden');
     countNote.textContent = "Mixed Mock Test: 20 questions — drawn from all 7 subjects.";
@@ -164,9 +170,19 @@ async function startTest() {
   quizBox.classList.remove('hidden');
   document.getElementById('palettePanel').classList.remove('hidden');
 
-  // Honest AI fallback notice (only when the topic wasn't in the bank)
+  // Honest AI notices: live generation failed, or the topic isn't in the bank.
   const notice = document.getElementById('aiNotice');
-  if (quizType === 'AI' && aiFallbackUsed) {
+  const noticeText = document.getElementById('aiNoticeText');
+  if (quizType === 'AI' && (aiFallbackUsed || aiErrorMessage)) {
+    if (noticeText) {
+      if (aiErrorMessage && aiFallbackUsed) {
+        noticeText.innerHTML = `<strong>Live AI generation failed</strong> — ${aiErrorMessage} This topic also isn't in the built-in bank, so practising mixed questions from all subjects instead.`;
+      } else if (aiErrorMessage) {
+        noticeText.innerHTML = `<strong>Live AI generation failed</strong> — ${aiErrorMessage} Using the built-in bank instead.`;
+      } else {
+        noticeText.innerHTML = `<strong>This topic isn't in the built-in bank yet</strong> — practising mixed questions from all subjects instead. Add the topic to the bank or set a Gemini API key for live generation.`;
+      }
+    }
     notice.classList.remove('hidden');
   } else {
     notice.classList.add('hidden');
@@ -186,25 +202,22 @@ async function startTest() {
 
 // ---------- AI topic generation ----------
 async function prepareAIQuestions(topic) {
-  if (GEMINI_API_KEY.trim() !== "") {
+  aiErrorMessage = '';
+  // Live generation first, when the user has saved their own Gemini key.
+  if (window.CadetAI && window.CadetAI.hasApiKey()) {
     try {
-      const prompt = `Generate ${questionCount} multiple-choice questions for Pakistan PPSC and Armed Forces exams on the topic "${topic}". Return ONLY valid JSON array format like: [{"q":"question","options":["A","B","C","D"],"answer":0,"explanation":"short explanation"}]`;
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      const generated = await window.CadetAI.generateQuestions({
+        topic,
+        count: questionCount,
+        difficulty: aiQuizDifficulty
       });
-      const data = await res.json();
-      const rawText = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(rawText);
-      if (Array.isArray(parsed) && parsed.length && parsed[0].q && Array.isArray(parsed[0].options)) {
-        questions = parsed;
-        aiFallbackUsed = false;
-        return;
-      }
-      throw new Error("Unexpected Gemini response format");
+      questions = generated;
+      aiFallbackUsed = false;
+      return;
     } catch (err) {
-      console.warn("Gemini failed, using built-in bank:", err);
+      console.warn("Gemini generation failed, using built-in bank:", err && err.code ? err.code : err);
+      aiErrorMessage = window.CadetAI.friendlyMessage(err);
+      // Fall through to the built-in bank below.
     }
   } else {
     // Short delay so the loading screen reads naturally
@@ -224,7 +237,7 @@ function getFallbackAIQuestions(topic) {
   }
   // Topic is NOT in the built-in bank: say so honestly, then run mixed questions.
   aiFallbackUsed = true;
-  return mixedQuestions(5);
+  return mixedQuestions(questionCount);
 }
 
 // ---------- Question rendering ----------

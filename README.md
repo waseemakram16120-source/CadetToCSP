@@ -13,12 +13,13 @@ visitor's own browser (`localStorage`).
 | --- | --- |
 | `index.html` | Professional landing page — exam modes, subjects, features, Cadet → CSP roadmap |
 | `auth.html` | Login / Register / Guest demo (localStorage only — see note below) |
-| `dashboard.html` | Exam-mode selector, 7 subjects, Mixed Mock Test (20 Qs), AI topic quiz, daily streak, per-subject accuracy, weak-area hints, test history, CSS-section card |
+| `dashboard.html` | Exam-mode selector, 7 subjects, Mixed Mock Test (20 Qs), AI topic quiz (topic, difficulty, count), Gemini key settings, daily streak, per-subject accuracy, weak-area hints, test history, CSS-section card |
 | `quiz.html` | Timed quiz engine — question palette, mark-for-review, question count (5/10/15), shuffle, elapsed timer, confirm-before-exit, full answer review |
 | `exams.html` | Real exam patterns & syllabus: PPSC one-paper, FPSC CSS, PMA Long Course, PAF, Pakistan Navy |
 | `css.html` | Full CSS (Central Superior Services) section — exam structure, compulsory & optional subjects, eligibility, essay practice (20 topics + 3-hour timer), précis practice, interview guidance, past papers 2020–2025 |
 | `css/style.css` | Shared army design system (olive drab, khaki, gold `#c9a227`, charcoal, paper) |
 | `js/data.js` | All question banks (plain script, no modules — works from `file://`) |
+| `js/ai.js` | Gemini client — live question generation, strict response validation, bring-your-own-key storage, connection test (plain script, no modules) |
 | `js/quiz.js` | Quiz engine — marking rules, timers, palette, results, history, streak |
 
 ## Question banks
@@ -89,22 +90,43 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-## Optional: live AI questions (Google Gemini)
+## Real AI quizzes — Google Gemini (bring your own key)
 
-The AI topic quiz works out of the box from the built-in bank (8 topics).
-To generate questions live for *any* topic with Google Gemini:
+The AI topic quiz can generate fresh questions live with Google Gemini, or
+work offline from the built-in bank (8 topics). No key is bundled with the
+site — you paste your own free key in the Dashboard:
 
-1. Get a free API key from [Google AI Studio](https://aistudio.google.com/).
-2. Open `js/quiz.js` and paste it into:
-   ```js
-   const GEMINI_API_KEY = "YOUR_KEY_HERE";
-   ```
-3. If the key is empty, invalid, or the request fails, the app silently falls
-   back to the built-in bank. If the topic isn't in the bank, the quiz shows
-   an honest notice and runs mixed questions from all subjects.
+1. Get a free API key from [Google AI Studio](https://aistudio.google.com/)
+   (sign in with a Google account → "Get API key" → "Create API key").
+2. On the Dashboard, open **Gemini API Key**, paste the key and press
+   **Save Key**. Press **Test Connection** to check it works.
+3. Pick a topic (any topic, not just the 8 built-in ones), a difficulty
+   (Easy / Medium / Hard) and a question count (5 / 10 / 15), then press
+   **Generate AI Quiz**.
 
-> ⚠ Never commit a real API key to a public repository. The key lives in the
-> browser and is visible to anyone who opens the page source.
+How it works: `js/ai.js` calls the Gemini `generateContent` REST endpoint
+(model `gemini-2.5-flash`, with `gemini-3-flash-preview` as a fallback if the
+first model is unavailable) with `responseMimeType: "application/json"` and a
+strict JSON schema, then validates every question (exactly 4 options, one
+correct answer, short explanation) before it reaches the quiz engine. The
+generated quiz runs through the normal engine — same timers, palette,
+mark-for-review and PPSC / Armed Forces marking rules.
+
+**If anything fails** (no key, bad key, quota used up, network error, or a
+bad response), the quiz falls back to the built-in bank and shows an honest
+notice explaining why — the test still runs. If the topic isn't in the bank,
+mixed questions from all subjects are used instead.
+
+**Privacy:** the key is stored only in your browser (`localStorage` key
+`geminiApiKey`) and is sent only to Google's Gemini API. It is never logged,
+never committed to the repository, and never sent anywhere else. Use **Remove
+Key** on the Dashboard to delete it at any time.
+
+**Free-tier limits:** Google's free tier allows only a small number of
+Gemini requests per day (and per minute), and the limits change from time to
+time — if you get a quota error (HTTP 429), wait and try again later, or use
+the built-in bank. See Google's official Gemini API rate-limits documentation
+for current numbers.
 
 ## Accounts & privacy — please read
 

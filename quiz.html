@@ -29,6 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/data.js"></script>
+    <script src="js/ai.js"></script>
 </head>
 <body class="ops-dark font-body min-h-screen flex flex-col">
 
@@ -103,7 +104,7 @@
             <div id="quizBox" class="hidden card-army !p-6 md:!p-8 shadow-xl">
                 <!-- Honest AI fallback notice -->
                 <div id="aiNotice" class="notice-amber hidden mb-5">
-                    ⚠ <strong>This topic isn't in the built-in bank yet</strong> — practising mixed questions from all subjects instead. Add the topic to the bank or set a Gemini API key for live generation.
+                    ⚠ <span id="aiNoticeText"><strong>This topic isn't in the built-in bank yet</strong> — practising mixed questions from all subjects instead. Add the topic to the bank or set a Gemini API key for live generation.</span>
                 </div>
 
                 <!-- Progress Info -->

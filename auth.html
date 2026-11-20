@@ -28,6 +28,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Firebase (compat builds, plain <script> tags — no modules, works from file://).
+         Version 12.11.0 per Google's official docs. If js/firebase-config.js still
+         holds the "YOUR_..." placeholders, the SDK simply stays idle and the
+         page works in guest/demo mode (see js/firebase.js). -->
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase.js"></script>
 </head>
 <body class="ops-dark font-body min-h-screen flex flex-col">
 
@@ -59,6 +68,16 @@
                 <p id="authSubtitle" class="text-[#a9ad97] text-sm mt-1">Prepare for PPSC &amp; Armed Forces tests</p>
             </div>
 
+            <!-- Firebase setup notice (shown only until a real config is pasted in) -->
+            <div id="firebaseSetupNotice" class="notice-amber mb-5 hidden text-xs leading-relaxed">
+                <strong>Cloud accounts not set up yet:</strong> this site runs in guest/demo
+                mode until a Firebase project is connected. Create a free project at
+                <a href="https://console.firebase.google.com" target="_blank" rel="noopener" class="underline font-semibold">Firebase Console</a>,
+                enable Email/Password sign-in, then paste the Web-app config into
+                <span class="font-mono">js/firebase-config.js</span> (steps are in the README).
+                Guest mode below still works — progress stays on this device only.
+            </div>
+
             <!-- Form -->
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div id="nameFieldBox" class="hidden">
@@ -79,20 +98,27 @@
                         class="input-army" />
                 </div>
 
+                <p id="authError" class="hidden text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></p>
+                <p id="authNotice" class="hidden text-sm text-[#e3c766] bg-[rgba(201,162,39,.1)] border border-[rgba(201,162,39,.4)] rounded-lg px-3 py-2"></p>
+
                 <button type="submit" id="submitBtn" class="btn-gold w-full">
                     Sign In
                 </button>
+
+                <p class="text-center">
+                    <button type="button" id="forgotBtn" onclick="forgotPassword()" class="text-xs text-[#a9ad97] hover:text-white underline">Forgot password?</button>
+                </p>
             </form>
 
             <!-- Divider -->
             <div class="relative my-6 text-center">
                 <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#33362a]"></div></div>
-                <span class="relative px-3 text-xs text-[#8a8f7c] uppercase" style="background: var(--charcoal-2);">Or quick demo access</span>
+                <span class="relative px-3 text-xs text-[#8a8f7c] uppercase" style="background: var(--charcoal-2);">Or continue without an account</span>
             </div>
 
             <!-- 1-Click Guest Login -->
             <button onclick="guestLogin()" class="btn-outline w-full !text-white text-sm flex items-center justify-center space-x-2">
-                <span>⚡ One-Click Recruiter / Guest Login</span>
+                <span>⚡ Continue as Guest — no account needed</span>
             </button>
 
             <!-- Switch Mode Toggle -->
@@ -101,11 +127,13 @@
                 <button type="button" onclick="toggleAuthMode(this)" class="text-gold font-semibold hover:underline ml-1">Register</button>
             </p>
 
-            <!-- Honest storage note -->
-            <div class="notice-olive mt-6 text-xs leading-relaxed">
-                <strong>Demo portal — please note:</strong> accounts on this site are stored only in your own
-                browser (localStorage). There is no server and no real password protection, so do not reuse a
-                password you use anywhere else. Your test history stays on this device only.
+            <!-- Storage note (text is swapped by JS once Firebase state is known) -->
+            <div id="storageNote" class="notice-olive mt-6 text-xs leading-relaxed">
+                <strong>Guest mode:</strong> Firebase is not connected yet, so this page
+                works as a demo — names and emails are stored only in your own browser
+                (localStorage). There is no server and no real password protection, so
+                do not reuse a password you use anywhere else. Your test history stays
+                on this device only.
             </div>
 
         </div>
@@ -120,6 +148,51 @@
     <script>
         let isRegisterMode = false;
 
+        function showError(msg) {
+            const el = document.getElementById('authError');
+            const note = document.getElementById('authNotice');
+            if (note) note.classList.add('hidden');
+            if (!el) return;
+            if (!msg) { el.classList.add('hidden'); el.textContent = ''; return; }
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        function showNotice(msg) {
+            const el = document.getElementById('authNotice');
+            const err = document.getElementById('authError');
+            if (err) err.classList.add('hidden');
+            if (!el) return;
+            if (!msg) { el.classList.add('hidden'); el.textContent = ''; return; }
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        function backend() { return window.CadetBackend || null; }
+
+        // On load: already signed in (Firebase session persists) → dashboard.
+        // Show the setup notice + guest wording when Firebase is not configured.
+        window.addEventListener('DOMContentLoaded', () => {
+            const b = backend();
+            const setupNotice = document.getElementById('firebaseSetupNotice');
+            const storageNote = document.getElementById('storageNote');
+            if (b && !b.isConfigured()) {
+                if (setupNotice) setupNotice.classList.remove('hidden');
+            } else if (b && b.isConfigured() && storageNote) {
+                storageNote.innerHTML = '<strong>Real accounts (Firebase):</strong> your account ' +
+                    'lives in Firebase Authentication and your test history, streak and profile ' +
+                    'sync to Cloud Firestore, so your progress follows you across devices. ' +
+                    'Your password is handled by Firebase — never reuse a password you use ' +
+                    'anywhere else. Guest mode below still works and keeps everything on ' +
+                    'this device only.';
+            }
+            if (b) {
+                b.onAuthChange((user) => {
+                    if (user) window.location.href = 'dashboard.html';
+                });
+            }
+        });
+
         // The toggle button is passed explicitly (no reliance on the global `event` object).
         function toggleAuthMode(btn) {
             isRegisterMode = !isRegisterMode;
@@ -128,6 +201,9 @@
             const submitBtn = document.getElementById('submitBtn');
             const nameFieldBox = document.getElementById('nameFieldBox');
             const switchText = document.getElementById('switchText');
+            const forgotBtn = document.getElementById('forgotBtn');
+            showError(null);
+            showNotice(null);
 
             if (isRegisterMode) {
                 title.textContent = "Create an Account";
@@ -136,6 +212,7 @@
                 nameFieldBox.classList.remove('hidden');
                 switchText.textContent = "Already have an account?";
                 btn.textContent = "Sign In";
+                if (forgotBtn) forgotBtn.classList.add('hidden');
             } else {
                 title.textContent = "Sign in to your account";
                 subtitle.textContent = "Prepare for PPSC & Armed Forces tests";
@@ -143,24 +220,85 @@
                 nameFieldBox.classList.add('hidden');
                 switchText.textContent = "Don't have an account?";
                 btn.textContent = "Register";
+                if (forgotBtn) forgotBtn.classList.remove('hidden');
             }
         }
 
-        function handleAuth(event) {
+        async function handleAuth(event) {
             event.preventDefault();
             const email = document.getElementById('userEmail').value.trim();
-            const name = isRegisterMode
-                ? document.getElementById('userName').value.trim()
-                : email.split('@')[0];
+            const password = document.getElementById('userPassword').value;
+            const name = document.getElementById('userName').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            showError(null);
+            showNotice(null);
 
-            // Demo auth: session is kept in localStorage only (no server).
-            localStorage.setItem('userName', name || "Aspirant");
-            localStorage.setItem('userEmail', email);
+            if (isRegisterMode && password.length < 6) {
+                showError('Password is too weak — use at least 6 characters.');
+                return;
+            }
 
-            window.location.href = 'dashboard.html';
+            const b = backend();
+            // Firebase not configured (or SDK failed): keep the old demo behaviour.
+            if (!b || !b.isConfigured()) {
+                const displayName = isRegisterMode ? (name || email.split('@')[0]) : email.split('@')[0];
+                localStorage.setItem('userName', displayName || "Aspirant");
+                localStorage.setItem('userEmail', email);
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = isRegisterMode ? 'Creating account…' : 'Signing in…';
+            try {
+                if (isRegisterMode) {
+                    const res = await b.signUp(email, password, name);
+                    if (res.verificationSent) {
+                        showNotice('Account created! A verification email was sent to ' + email +
+                            ' — check your inbox (and spam folder). You can already use the site; verification is not required to sign in.');
+                    } else {
+                        showNotice('Account created! (The verification email could not be sent — you can still use the site.)');
+                    }
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+                } else {
+                    await b.logIn(email, password);
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (err) {
+                showError(b.friendlyAuthMessage(err));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isRegisterMode ? 'Create Account' : 'Sign In';
+            }
         }
 
-        function guestLogin() {
+        async function forgotPassword() {
+            const email = document.getElementById('userEmail').value.trim();
+            showError(null);
+            showNotice(null);
+            if (!email) {
+                showError('Type your email address in the Email field first, then press "Forgot password?".');
+                return;
+            }
+            const b = backend();
+            if (!b || !b.isConfigured()) {
+                showError('Password reset needs Firebase — it is not set up yet. Guest mode has no password to reset.');
+                return;
+            }
+            try {
+                await b.resetPassword(email);
+                showNotice('Password-reset email sent to ' + email + ' — check your inbox (and spam folder).');
+            } catch (err) {
+                showError(b.friendlyAuthMessage(err));
+            }
+        }
+
+        async function guestLogin() {
+            // Sign out of any Firebase session first, so guest mode is really local-only.
+            const b = backend();
+            if (b && b.isLoggedIn()) {
+                try { await b.logOut(); } catch (e) { /* ignore */ }
+            }
             localStorage.setItem('userName', "Guest Recruiter");
             localStorage.setItem('userEmail', "recruiter@cadettocsp.com");
             window.location.href = 'dashboard.html';

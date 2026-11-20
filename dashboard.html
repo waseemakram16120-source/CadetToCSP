@@ -30,6 +30,14 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/data.js"></script>
     <script src="js/ai.js"></script>
+    <!-- Firebase (compat builds, plain <script> tags — no modules, works from file://).
+         Version 12.11.0 per Google's official docs. Guest mode when the config
+         in js/firebase-config.js is still a placeholder (see js/firebase.js). -->
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase.js"></script>
 </head>
 <body class="ops-dark font-body min-h-screen flex flex-col">
 
@@ -52,7 +60,7 @@
                     <span>👤</span>
                     <span id="aspirantNameDisplay">Aspirant Portal</span>
                 </div>
-                <a href="auth.html" class="text-xs text-[#a9ad97] hover:text-red-400 transition">Logout</a>
+                <button id="logoutBtn" onclick="logoutUser()" class="text-xs text-[#a9ad97] hover:text-red-400 transition">Logout</button>
             </div>
         </div>
         <div class="chevron-strip thin"></div>
@@ -66,6 +74,8 @@
                 <p class="eyebrow" style="color: var(--gold);">Aspirant Dashboard</p>
                 <h1 class="font-display text-3xl md:text-4xl text-white mt-1">Welcome back, <span id="welcomeName" class="text-gold">Aspirant</span></h1>
                 <p class="text-[#a9ad97] text-sm mt-1">Discipline is the bridge between goals and accomplishment. One test a day keeps the merit list in sight.</p>
+                <p id="userEmailDisplay" class="text-xs text-[#8a8f7c] mt-1"></p>
+                <p id="syncStatusLine" class="text-xs mt-1 text-[#8a8f7c]">Checking account status…</p>
             </div>
             <div class="card-army !py-4 !px-5 flex items-center gap-4">
                 <span class="text-3xl">🔥</span>
@@ -269,7 +279,74 @@
             setExamMode(currentMode);
             loadDashboardStats();
             loadStreak();
+            initBackendUI();
         };
+
+        /* ---------- Firebase accounts & cloud sync (Step 3) ---------- */
+        function updateSyncLine(status) {
+            const line = document.getElementById('syncStatusLine');
+            if (!line) return;
+            if (status === 'cloud') {
+                line.textContent = '☁️ Synced to cloud — your progress saves across devices.';
+                line.style.color = '#e3c766';
+            } else if (status === 'not-configured') {
+                line.textContent = '👤 Guest — Firebase is not set up yet, so progress is saved only on this device. (See README to connect it.)';
+                line.style.color = '#8a8f7c';
+            } else if (status === 'no-sdk') {
+                line.textContent = '⚠️ Could not load Firebase — check your internet connection. Progress is saved only on this device for now.';
+                line.style.color = '#f2b04d';
+            } else if (status === 'error') {
+                line.textContent = '⚠️ Cloud sync had a problem — progress is saved only on this device for now.';
+                line.style.color = '#f2b04d';
+            } else {
+                line.textContent = '👤 Guest — progress is saved only on this device. Sign in to sync across devices.';
+                line.style.color = '#8a8f7c';
+            }
+        }
+
+        function refreshUserDisplay(user) {
+            const b = window.CadetBackend;
+            const status = b ? b.getSyncStatus() : 'guest';
+            updateSyncLine(status);
+            const emailEl = document.getElementById('userEmailDisplay');
+            if (user && user.email) {
+                const name = user.displayName || (user.email || '').split('@')[0];
+                document.getElementById('aspirantNameDisplay').textContent = name;
+                document.getElementById('welcomeName').textContent = name.split(' ')[0];
+                if (emailEl) emailEl.textContent = user.email + (user.emailVerified ? ' • Email verified ✓' : ' • Email not verified yet — check your inbox');
+            } else if (emailEl) {
+                const localEmail = localStorage.getItem('userEmail');
+                emailEl.textContent = (localEmail && localEmail !== 'recruiter@cadettocsp.com') ? localEmail : '';
+            }
+        }
+
+        function initBackendUI() {
+            const b = window.CadetBackend;
+            if (!b) { updateSyncLine('guest'); return; }
+            // Fires immediately with the current user (if the session is already
+            // known), and again on every sign-in / sign-out.
+            b.onAuthChange((user) => {
+                refreshUserDisplay(user);
+                if (user) {
+                    // Cloud data lands in the localStorage mirror first, then
+                    // the stats re-render from the synced data.
+                    setTimeout(() => { loadDashboardStats(); loadStreak(); }, 600);
+                }
+            });
+            refreshUserDisplay(b.getUser());
+        }
+
+        async function logoutUser() {
+            const b = window.CadetBackend;
+            if (b && b.isLoggedIn()) {
+                await b.logOut();
+                window.location.href = 'auth.html';
+                return;
+            }
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'auth.html';
+        }
 
         function initAiControls() {
             const sel = document.getElementById('aiDifficultySelect');
@@ -527,6 +604,12 @@
         function clearHistory() {
             if (!window.confirm("Reset all test history and stats? This cannot be undone.")) return;
             localStorage.removeItem('testHistory');
+            localStorage.removeItem('cadetStreak');
+            const b = window.CadetBackend;
+            if (b && b.isLoggedIn()) {
+                // Also wipe the cloud copy so it doesn't sync back down.
+                b.clearCloudData();
+            }
             location.reload();
         }
     </script>

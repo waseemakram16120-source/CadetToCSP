@@ -1,0 +1,44 @@
+# ============================================================
+# CadetToCSP — Cloud Firestore security rules (firestore.rules)
+#
+# What this does: every signed-in user can read and write ONLY
+# their own document (users/{uid} where {uid} is their Firebase
+# Auth user ID). Everything else is denied by default — no one
+# can read or change another aspirant's test history, streak or
+# profile, and nobody can list the users collection.
+#
+# How to publish these rules:
+#   Option A — Firebase Console (no tools needed):
+#     1. Open https://console.firebase.google.com → your project.
+#     2. Go to Build → Firestore Database → Rules tab.
+#     3. Delete the rules shown there and paste this whole file.
+#     4. Click "Publish".
+#   Option B — Firebase CLI:
+#     firebase deploy --only firestore:rules
+#     (run from the folder that contains this file and a
+#     firebase.json that points firestore.rules at "rules".)
+#
+# IMPORTANT: create the database in PRODUCTION MODE first
+# (Firestore Database → Create database → "Start in production
+# mode"), which denies everything until these rules are
+# published. Never publish "allow read, write: if true" —
+# that would make every user's data public.
+# ============================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // One document per user: users/{uid}
+    // Only the signed-in owner of that uid may read or write it.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Deny everything else by default (including listing collections).
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

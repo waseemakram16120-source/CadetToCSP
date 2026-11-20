@@ -533,6 +533,16 @@ function saveScoreToHistory(subject, mode, netScore, total, accuracy, correct, w
 
   localStorage.setItem('testHistory', JSON.stringify(history.slice(0, 10)));
   updateStreak();
+
+  // Step 3 — cloud sync (best-effort, never blocks the result screen):
+  // when a Firebase user is signed in, the local mirror (history + streak)
+  // is uploaded to Firestore; when logged out or not configured this is a
+  // no-op and the local behaviour above is unchanged.
+  try {
+    if (window.CadetBackend) {
+      window.CadetBackend.syncLocal().catch(function () { /* offline / not configured */ });
+    }
+  } catch (e) { /* cloud sync must never break the quiz */ }
 }
 
 function updateStreak() {

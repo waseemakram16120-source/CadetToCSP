@@ -24,10 +24,10 @@
    ============================================================ */
 
 window.CADET_FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBmAjvqslP5UNizvyZO3boQXmQvOMaXU_A",
+  authDomain: "cadettocsp.firebaseapp.com",
+  projectId: "cadettocsp",
+  storageBucket: "cadettocsp.firebasestorage.app",
+  messagingSenderId: "524701793804",
+  appId: "1:524701793804:web:e36c9c9afba79cbd1af829"
 };

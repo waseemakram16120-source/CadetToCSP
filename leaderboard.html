@@ -11,14 +11,14 @@
             theme: {
                 extend: {
                     colors: {
-                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
-                        gold: '#c9a227',
-                        khaki: '#c3b091',
-                        charcoal: '#1c1e1a',
-                        paper: '#f4f1e6'
+                        navy: { 950:'#0f2040', 900:'#1a2f4e', 800:'#24406a', 700:'#2c4f7c', 600:'#3a6394', 500:'#4a76ab', 200:'#b9c8dc', 100:'#dbe4f0', 50:'#eef2f7' },
+                        gold: '#b08d2e',
+                        mist: '#d7dee8',
+                        steel: '#5a6b82',
+                        paper: '#f7f8fa'
                     },
                     fontFamily: {
-                        display: ['"Saira Stencil One"', 'cursive'],
+                        display: ['"Playfair Display"', 'Georgia', 'serif'],
                         body: ['Inter', 'sans-serif']
                     }
                 }
@@ -27,7 +27,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/analytics.js"></script>
     <!-- Firebase (compat builds, plain <script> tags — no modules, works from file://).
@@ -41,18 +41,18 @@
     <script src="js/firebase.js"></script>
     <style>
         .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 2.1rem; height: 2.1rem; border-radius: 50%; font-weight: 800; font-size: .95rem; }
-        .rank-1 { background: var(--gold); color: var(--olive-950); box-shadow: 0 0 0 2px var(--gold-dark); }
+        .rank-1 { background: var(--gold); color: var(--navy-950); box-shadow: 0 0 0 2px var(--gold-dark); }
         .rank-2 { background: #c9c9c9; color: #23261f; box-shadow: 0 0 0 2px #8f8f8f; }
         .rank-3 { background: #c08a4e; color: #fff; box-shadow: 0 0 0 2px #8a5a2b; }
-        .rank-other { background: var(--charcoal-3); color: var(--khaki-light); border: 1px solid #4a4d3d; }
-        tr.top-row td { background: rgba(201, 162, 39, .07); }
-        tr.me-row td { background: rgba(201, 162, 39, .16); border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+        .rank-other { background: var(--navy-100); color: var(--navy-900); border: 1px solid var(--navy-200); }
+        tr.top-row td { background: rgba(176, 141, 46, .07); }
+        tr.me-row td { background: rgba(176, 141, 46, .16); border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
     </style>
 </head>
-<body class="ops-dark font-body min-h-screen flex flex-col">
+<body class="paper-light font-body min-h-screen flex flex-col">
 
     <!-- Top Navigation -->
-    <nav class="nav-army">
+    <nav class="nav-main">
         <div class="max-w-6xl mx-auto px-6 md:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
             <a href="index.html" class="flex items-center space-x-2.5">
                 <span class="logo-badge">CC</span>
@@ -66,11 +66,11 @@
                 <a href="leaderboard.html" class="nav-link active">Leaderboard</a>
             </div>
             <div class="flex items-center space-x-3">
-                <span id="activeModeBadge" class="dogtag">Merit List</span>
+                <span id="activeModeBadge" class="badge-official">Merit List</span>
                 <a href="dashboard.html" class="btn-gold !py-2 !px-4 text-sm">My Dashboard →</a>
             </div>
         </div>
-        <div class="chevron-strip thin"></div>
+        <div class="rule-strip thin"></div>
     </nav>
 
     <main class="max-w-6xl w-full mx-auto px-6 py-10 space-y-8 flex-1">
@@ -78,25 +78,25 @@
         <!-- Header -->
         <section>
             <p class="eyebrow" style="color: var(--gold);">Merit List • All Aspirants</p>
-            <h1 class="font-display text-3xl md:text-4xl text-white mt-1">🏆 Leaderboard</h1>
-            <p class="text-[#a9ad97] text-sm mt-2 max-w-2xl">
-                Ranked by <strong class="text-white">total score</strong>, then stars, then tests taken.
+            <h1 class="font-display text-3xl md:text-4xl text-navy-900 mt-1">🏆 Leaderboard</h1>
+            <p class="text-[#5a6b82] text-sm mt-2 max-w-2xl">
+                Ranked by <strong class="text-navy-900">total score</strong>, then stars, then tests taken.
                 Every finished test counts — the more you practise (and the better you score), the higher you climb.
-                Only names and scores are public here — <strong class="text-white">never emails</strong>.
+                Only names and scores are public here — <strong class="text-navy-900">never emails</strong>.
                 You can hide yourself any time from the Dashboard ("Show me on the leaderboard").
             </p>
         </section>
 
         <!-- Controls -->
         <section class="flex flex-wrap items-center justify-between gap-3">
-            <p id="boardStatus" class="text-sm text-[#a9ad97]">Loading the merit list…</p>
+            <p id="boardStatus" class="text-sm text-[#5a6b82]">Loading the merit list…</p>
             <button onclick="loadLeaderboard(true)" id="refreshBtn" class="btn-outline !py-2 !px-4 text-sm">↻ Refresh Board</button>
         </section>
 
         <!-- Board -->
-        <section class="card-army !p-0 overflow-hidden">
+        <section class="card-main !p-0 overflow-hidden">
             <div id="boardWrap" class="overflow-x-auto">
-                <table class="table-army">
+                <table class="table-main">
                     <thead>
                         <tr>
                             <th style="width: 4.5rem;">Rank</th>
@@ -109,35 +109,35 @@
                         </tr>
                     </thead>
                     <tbody id="boardBody">
-                        <tr><td colspan="7" class="text-center text-[#a9ad97] py-8">Loading…</td></tr>
+                        <tr><td colspan="7" class="text-center text-[#5a6b82] py-8">Loading…</td></tr>
                     </tbody>
                 </table>
             </div>
             <!-- Empty state -->
             <div id="emptyState" class="hidden text-center py-12 px-6">
                 <p class="text-4xl">🎖️</p>
-                <h3 class="font-display text-xl text-white mt-3">You're the first aspirant on the board</h3>
-                <p class="text-[#a9ad97] text-sm mt-2">No one has appeared on the leaderboard yet. Take a test and your name will be the first one here.</p>
+                <h3 class="font-display text-xl text-navy-900 mt-3">You're the first aspirant on the board</h3>
+                <p class="text-[#5a6b82] text-sm mt-2">No one has appeared on the leaderboard yet. Take a test and your name will be the first one here.</p>
                 <a href="dashboard.html" class="btn-gold mt-5 inline-block">Take a Test →</a>
             </div>
             <!-- Sign-in / setup states -->
             <div id="boardNotice" class="hidden text-center py-12 px-6">
-                <p id="boardNoticeText" class="text-[#cfd2bd] text-sm"></p>
+                <p id="boardNoticeText" class="text-[#33415c] text-sm"></p>
                 <a id="boardNoticeBtn" href="auth.html" class="btn-gold mt-5 inline-block hidden">Sign In / Register →</a>
             </div>
         </section>
 
         <!-- How it works -->
-        <section class="card-army">
+        <section class="card-main">
             <div class="section-head mb-3">
-                <span class="rank-mark">❯❯❯</span>
-                <h3 class="font-display text-lg text-white">How the ranking works</h3>
+                <span class="rank-mark">■</span>
+                <h3 class="font-display text-lg text-navy-900">How the ranking works</h3>
             </div>
-            <ul class="text-sm text-[#cfd2bd] space-y-2 list-disc pl-5">
-                <li><strong class="text-white">Total Score</strong> — the sum of your net scores across all tests (PPSC −0.25 negative marking applies).</li>
-                <li><strong class="text-white">Stars</strong> — earned per test: 3 stars at 90%+ accuracy, 2 at 70%+, 1 at 50%+, otherwise 0.</li>
-                <li><strong class="text-white">Best</strong> — your best accuracy in any single test.</li>
-                <li><strong class="text-white">Streak</strong> — consecutive days with at least one test.</li>
+            <ul class="text-sm text-[#33415c] space-y-2 list-disc pl-5">
+                <li><strong class="text-navy-900">Total Score</strong> — the sum of your net scores across all tests (PPSC −0.25 negative marking applies).</li>
+                <li><strong class="text-navy-900">Stars</strong> — earned per test: 3 stars at 90%+ accuracy, 2 at 70%+, 1 at 50%+, otherwise 0.</li>
+                <li><strong class="text-navy-900">Best</strong> — your best accuracy in any single test.</li>
+                <li><strong class="text-navy-900">Streak</strong> — consecutive days with at least one test.</li>
                 <li>The board refreshes after every finished test. Opted out? Your row disappears — turn it back on from the Dashboard.</li>
             </ul>
         </section>
@@ -145,7 +145,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer-army text-center py-6 text-sm text-khaki/70 mt-10">
+    <footer class="footer-main text-center py-6 text-sm text-mist/70 mt-10">
         <p>© 2026 CadetToCSP — PPSC &amp; Armed Forces Test Portal</p>
     </footer>
 
@@ -229,9 +229,9 @@
                     const rowCls = (rank <= 3 ? 'top-row ' : '') + (isMe ? 'me-row' : '');
                     return '<tr class="' + rowCls + '">' +
                         '<td>' + rankBadge(rank) + '</td>' +
-                        '<td><span class="font-bold text-white">' + escapeHtml(e.displayName) + '</span>' +
-                        (isMe ? ' <span class="kbd-chip" style="color: var(--gold-light); border-color: var(--gold);">YOU</span>' : '') + '</td>' +
-                        '<td class="font-bold" style="color: var(--gold-light);">' + Number(e.totalScore).toFixed(2) + '</td>' +
+                        '<td><span class="font-bold text-navy-900">' + escapeHtml(e.displayName) + '</span>' +
+                        (isMe ? ' <span class="kbd-chip" style="color: var(--gold-dark); border-color: var(--gold);">YOU</span>' : '') + '</td>' +
+                        '<td class="font-bold" style="color: var(--gold-dark);">' + Number(e.totalScore).toFixed(2) + '</td>' +
                         '<td>' + '⭐'.repeat(Math.min(3, Math.max(0, e.totalStars))) + ' ' + e.totalStars + '</td>' +
                         '<td>' + e.testsTaken + '</td>' +
                         '<td>' + e.bestScore + '%</td>' +

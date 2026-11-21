@@ -20,7 +20,7 @@ No paid services. All progress is stored in the visitor's own browser
 | `quiz.html` | Timed quiz engine — question palette, mark-for-review, question count (5/10/15), shuffle, elapsed timer, confirm-before-exit, full answer review |
 | `exams.html` | Real exam patterns & syllabus: PPSC one-paper, FPSC CSS, PMA Long Course, PAF, Pakistan Navy |
 | `css.html` | Full CSS (Central Superior Services) section — exam structure, compulsory & optional subjects, eligibility, essay practice (20 topics + 3-hour timer), précis practice, interview guidance, past papers 2020–2025 |
-| `css/style.css` | Shared army design system (olive drab, khaki, gold `#c9a227`, charcoal, paper) |
+| `css/style.css` | Shared Official Academy design system (deep navy `#1a2f4e`, white, restrained gold `#b08d2e`, Playfair Display serif headings) |
 | `js/data.js` | All question banks (plain script, no modules — works from `file://`) |
 | `js/ai.js` | Gemini client — live question generation, strict response validation, bring-your-own-key storage, connection test (plain script, no modules) |
 | `js/firebase-config.js` | Your Firebase project's Web-app config — **placeholders until you paste your own values** (see "Real accounts & backend" below) |

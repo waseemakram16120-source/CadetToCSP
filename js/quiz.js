@@ -463,38 +463,38 @@ function showResults() {
 
     if (userAns === null || userAns === undefined) {
       skipped++;
-      statusBadge = `<span class="text-xs bg-[#33362a] text-[#cfd2bd] px-2.5 py-1 rounded whitespace-nowrap">Skipped (0.00)</span>`;
+      statusBadge = `<span class="text-xs bg-[#c9d3e0] text-[#33415c] px-2.5 py-1 rounded whitespace-nowrap">Skipped (0.00)</span>`;
     } else if (userAns === q.answer) {
       correct++;
-      statusBadge = `<span class="text-xs bg-[rgba(201,162,39,.15)] text-[#e3c766] border border-[rgba(201,162,39,.4)] px-2.5 py-1 rounded whitespace-nowrap">Correct (+1.00)</span>`;
+      statusBadge = `<span class="text-xs bg-[rgba(176,141,46,.15)] text-[#8a6d1a] border border-[rgba(176,141,46,.4)] px-2.5 py-1 rounded whitespace-nowrap">Correct (+1.00)</span>`;
     } else {
       wrong++;
       if (examMode === 'PPSC') {
         penalty += 0.25;
-        statusBadge = `<span class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2.5 py-1 rounded whitespace-nowrap">Wrong (−0.25)</span>`;
+        statusBadge = `<span class="text-xs bg-red-500/20 text-red-700 border border-red-500/30 px-2.5 py-1 rounded whitespace-nowrap">Wrong (−0.25)</span>`;
       } else {
-        statusBadge = `<span class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2.5 py-1 rounded whitespace-nowrap">Wrong (0.00)</span>`;
+        statusBadge = `<span class="text-xs bg-red-500/20 text-red-700 border border-red-500/30 px-2.5 py-1 rounded whitespace-nowrap">Wrong (0.00)</span>`;
       }
     }
 
     const markedTag = markedForReview.has(idx)
-      ? `<span class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded whitespace-nowrap">★ Marked</span>`
+      ? `<span class="text-xs bg-amber-500/20 text-amber-700 border border-amber-500/30 px-2.5 py-1 rounded whitespace-nowrap">★ Marked</span>`
       : '';
 
     const yourAnswerLine = (userAns === null || userAns === undefined)
-      ? `<p class="text-sm text-[#a9ad97] mt-2">Your answer: <em>Not attempted</em></p>`
-      : `<p class="text-sm mt-2 ${userAns === q.answer ? 'text-[#e3c766]' : 'text-red-400'}">Your answer: ${q.options[userAns]}</p>`;
+      ? `<p class="text-sm text-[#5a6b82] mt-2">Your answer: <em>Not attempted</em></p>`
+      : `<p class="text-sm mt-2 ${userAns === q.answer ? 'text-[#8a6d1a]' : 'text-red-700'}">Your answer: ${q.options[userAns]}</p>`;
 
     const reviewItem = document.createElement('div');
-    reviewItem.className = "bg-[#1c1e1a] border border-[#33362a] p-4 rounded-xl";
+    reviewItem.className = "bg-[#eef2f7] border border-[#c9d3e0] p-4 rounded-xl";
     reviewItem.innerHTML = `
       <div class="flex justify-between items-start gap-4 flex-wrap">
-        <p class="font-bold text-white">${idx + 1}. ${q.q}</p>
+        <p class="font-bold text-navy-900">${idx + 1}. ${q.q}</p>
         <span class="flex gap-2">${markedTag}${statusBadge}</span>
       </div>
       ${yourAnswerLine}
-      <p class="text-sm text-[#e3c766] mt-1">✔ Correct Answer: ${q.options[q.answer]}</p>
-      <p class="text-xs text-[#a9ad97] mt-1.5 bg-[#26281f] p-2.5 rounded-lg border border-[#33362a]">
+      <p class="text-sm text-[#8a6d1a] mt-1">✔ Correct Answer: ${q.options[q.answer]}</p>
+      <p class="text-xs text-[#5a6b82] mt-1.5 bg-[#eef2f7] p-2.5 rounded-lg border border-[#c9d3e0]">
         💡 <strong>Explanation:</strong> ${q.explanation}
       </p>`;
     reviewContainer.appendChild(reviewItem);

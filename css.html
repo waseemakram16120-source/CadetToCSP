@@ -11,14 +11,14 @@
             theme: {
                 extend: {
                     colors: {
-                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
-                        gold: '#c9a227',
-                        khaki: '#c3b091',
-                        charcoal: '#1c1e1a',
-                        paper: '#f4f1e6'
+                        navy: { 950:'#0f2040', 900:'#1a2f4e', 800:'#24406a', 700:'#2c4f7c', 600:'#3a6394', 500:'#4a76ab', 200:'#b9c8dc', 100:'#dbe4f0', 50:'#eef2f7' },
+                        gold: '#b08d2e',
+                        mist: '#d7dee8',
+                        steel: '#5a6b82',
+                        paper: '#f7f8fa'
                     },
                     fontFamily: {
-                        display: ['"Saira Stencil One"', 'cursive'],
+                        display: ['"Playfair Display"', 'Georgia', 'serif'],
                         body: ['Inter', 'sans-serif']
                     }
                 }
@@ -27,13 +27,13 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="paper-light font-body min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <nav class="nav-army sticky top-0 z-50">
+    <nav class="nav-main sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 md:px-8 py-3.5 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-2.5">
                 <span class="logo-badge">CC</span>
@@ -48,18 +48,18 @@
             </div>
             <a href="auth.html" class="btn-gold !py-2.5 !px-5 text-sm">Start Portal →</a>
         </div>
-        <div class="chevron-strip thin"></div>
+        <div class="rule-strip thin"></div>
     </nav>
 
     <!-- Header -->
-    <header class="bg-olive-950 text-white">
+    <header class="bg-navy-950 text-white">
         <div class="max-w-6xl mx-auto px-6 py-14">
-            <span class="dogtag gold">🎖️ The Final Objective</span>
+            <span class="badge-official gold">🎖️ The Final Objective</span>
             <h1 class="font-display text-3xl md:text-5xl mt-4">CSS — Central Superior Services</h1>
-            <p class="text-khaki max-w-2xl mt-3 leading-relaxed">The examination that turns a cadet into a CSP officer. Everything below — the structure, the syllabus, essay and précis practice, the interview and the past papers — is the full road map for the FPSC Competitive Examination.</p>
-            <p class="text-xs text-khaki/70 mt-4">⚠ Figures below follow the published FPSC pattern (Senate briefing on the CSS scheme and the CE Rules). The official FPSC advertisement for your year is always final — confirm eligibility, dates and any rule changes at <a href="https://www.fpsc.gov.pk" class="underline text-gold" target="_blank" rel="noopener">fpsc.gov.pk</a>.</p>
+            <p class="text-mist max-w-2xl mt-3 leading-relaxed">The examination that turns a cadet into a CSP officer. Everything below — the structure, the syllabus, essay and précis practice, the interview and the past papers — is the full road map for the FPSC Competitive Examination.</p>
+            <p class="text-xs text-mist/70 mt-4">⚠ Figures below follow the published FPSC pattern (Senate briefing on the CSS scheme and the CE Rules). The official FPSC advertisement for your year is always final — confirm eligibility, dates and any rule changes at <a href="https://www.fpsc.gov.pk" class="underline text-gold" target="_blank" rel="noopener">fpsc.gov.pk</a>.</p>
         </div>
-        <div class="chevron-strip"></div>
+        <div class="rule-strip"></div>
     </header>
 
     <main class="max-w-6xl mx-auto px-6 py-12 space-y-14 flex-1 w-full">
@@ -67,18 +67,18 @@
         <!-- At a glance -->
         <section>
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
-                <h2 class="font-display text-2xl text-olive-900">The Examination at a Glance</h2>
+                <span class="rank-mark">■</span>
+                <h2 class="font-display text-2xl text-navy-900">The Examination at a Glance</h2>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="card-paper text-center"><p class="stat-num text-olive-900">1,500</p><p class="text-sm text-[#4c4f42] mt-1">Total marks<br>(1,200 written + 300 interview)</p></div>
-                <div class="card-paper text-center"><p class="stat-num text-olive-900">12</p><p class="text-sm text-[#4c4f42] mt-1">Written papers<br>(6 compulsory + 6 optional)</p></div>
-                <div class="card-paper text-center"><p class="stat-num text-olive-900">3 hrs</p><p class="text-sm text-[#4c4f42] mt-1">Per paper<br>Each 100-mark paper: 3 hours</p></div>
-                <div class="card-paper text-center"><p class="stat-num text-olive-900">3</p><p class="text-sm text-[#4c4f42] mt-1">Attempts max<br>One attempt counts once you appear</p></div>
+                <div class="card-paper text-center"><p class="stat-num text-navy-900">1,500</p><p class="text-sm text-[#3d4a5c] mt-1">Total marks<br>(1,200 written + 300 interview)</p></div>
+                <div class="card-paper text-center"><p class="stat-num text-navy-900">12</p><p class="text-sm text-[#3d4a5c] mt-1">Written papers<br>(6 compulsory + 6 optional)</p></div>
+                <div class="card-paper text-center"><p class="stat-num text-navy-900">3 hrs</p><p class="text-sm text-[#3d4a5c] mt-1">Per paper<br>Each 100-mark paper: 3 hours</p></div>
+                <div class="card-paper text-center"><p class="stat-num text-navy-900">3</p><p class="text-sm text-[#3d4a5c] mt-1">Attempts max<br>One attempt counts once you appear</p></div>
             </div>
 
             <div class="overflow-x-auto rounded-2xl border border-[--line] bg-white shadow-sm mt-6">
-                <table class="table-army">
+                <table class="table-main">
                     <thead>
                         <tr><th>Stage</th><th>What Happens</th><th>Marks</th><th>To Pass</th></tr>
                     </thead>
@@ -91,20 +91,20 @@
                     </tbody>
                 </table>
             </div>
-            <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">Final merit is the written score (1,200) plus the viva voce (300) — <strong>1,500 marks in total</strong>. The whole cycle, from advertisement to final merit list, takes about 12 to 14 months.</p>
+            <p class="text-sm text-[#3d4a5c] mt-3 leading-relaxed">Final merit is the written score (1,200) plus the viva voce (300) — <strong>1,500 marks in total</strong>. The whole cycle, from advertisement to final merit list, takes about 12 to 14 months.</p>
         </section>
 
         <!-- Compulsory subjects -->
         <section id="compulsory">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
+                <span class="rank-mark">■</span>
                 <div>
-                    <p class="eyebrow text-olive-700">600 Marks — Same for Everyone</p>
-                    <h2 class="font-display text-2xl text-olive-900">Compulsory Subjects</h2>
+                    <p class="eyebrow text-navy-700">600 Marks — Same for Everyone</p>
+                    <h2 class="font-display text-2xl text-navy-900">Compulsory Subjects</h2>
                 </div>
             </div>
             <div class="overflow-x-auto rounded-2xl border border-[--line] bg-white shadow-sm">
-                <table class="table-army">
+                <table class="table-main">
                     <thead>
                         <tr><th>#</th><th>Compulsory Subject</th><th>Marks</th><th>What It Tests</th></tr>
                     </thead>
@@ -118,25 +118,25 @@
                     </tbody>
                 </table>
             </div>
-            <p class="text-sm text-[#4c4f42] mt-3">To qualify for the interview you need <strong>at least 40% in every compulsory paper</strong>. The MCQ quizzes on this portal (CSS Compulsory MCQs + English Précis &amp; Composition) drill exactly this base — <a href="dashboard.html" class="underline font-semibold text-olive-700">practise them on the dashboard →</a></p>
+            <p class="text-sm text-[#3d4a5c] mt-3">To qualify for the interview you need <strong>at least 40% in every compulsory paper</strong>. The MCQ quizzes on this portal (CSS Compulsory MCQs + English Précis &amp; Composition) drill exactly this base — <a href="dashboard.html" class="underline font-semibold text-navy-700">practise them on the dashboard →</a></p>
         </section>
 
         <!-- Optional subjects -->
         <section id="optional">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
+                <span class="rank-mark">■</span>
                 <div>
-                    <p class="eyebrow text-olive-700">600 Marks — Your Choice</p>
-                    <h2 class="font-display text-2xl text-olive-900">Optional Subjects — Seven Groups</h2>
+                    <p class="eyebrow text-navy-700">600 Marks — Your Choice</p>
+                    <h2 class="font-display text-2xl text-navy-900">Optional Subjects — Seven Groups</h2>
                 </div>
             </div>
-            <div class="notice-olive mb-6" style="color: var(--olive-900); background: rgba(75,83,32,.08); border-color: rgba(75,83,32,.35);">
+            <div class="notice-navy mb-6" style="color: var(--navy-900); background: rgba(44,79,124,.08); border-color: rgba(44,79,124,.35);">
                 <strong>Selection rules (CE Rules):</strong> your optional subjects must total <strong>exactly 600 marks</strong>. You may not take more than <strong>200 marks from any one group</strong>, and a 100-mark subject is one paper while a 200-mark subject is two papers. Group I allows one 200-mark subject only; Group II allows one 200-mark subject <em>or</em> two 100-mark subjects; Groups III–VII allow one 100-mark subject each. You do not have to touch every group. Optional subjects cannot be changed after you submit your application — choose carefully, and confirm the group list in the FPSC advertisement for your year.
             </div>
             <div class="grid md:grid-cols-2 gap-5">
                 <div class="card-paper">
                     <h3 class="text-lg">Group I — One subject, 200 marks</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
                         <li>Accountancy &amp; Auditing — 200</li>
                         <li>Economics — 200</li>
                         <li>Computer Science — 200</li>
@@ -146,18 +146,18 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Group II — 200 marks total</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
-                        <li>Physics — 200 <span class="text-[#8a8f7c]">(or)</span> Chemistry — 200</li>
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                        <li>Physics — 200 <span class="text-[#7a8aa0]">(or)</span> Chemistry — 200</li>
                         <li>Applied Mathematics — 100</li>
                         <li>Pure Mathematics — 100</li>
                         <li>Statistics — 100</li>
                         <li>Geology — 100</li>
                     </ul>
-                    <p class="text-xs text-[#8a8f7c] mt-3">Either one 200-mark subject, or any two 100-mark subjects from this group.</p>
+                    <p class="text-xs text-[#7a8aa0] mt-3">Either one 200-mark subject, or any two 100-mark subjects from this group.</p>
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Group III — One subject, 100 marks</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
                         <li>Business Administration</li>
                         <li>Public Administration</li>
                         <li>Governance &amp; Public Policies</li>
@@ -166,7 +166,7 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Group IV — One subject, 100 marks</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
                         <li>History of Pakistan &amp; India</li>
                         <li>Islamic History &amp; Culture</li>
                         <li>British History</li>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Group V — One subject, 100 marks</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
                         <li>Gender Studies</li>
                         <li>Environmental Sciences</li>
                         <li>Agriculture &amp; Forestry</li>
@@ -188,7 +188,7 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Group VI — One subject, 100 marks</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
                         <li>Law</li>
                         <li>Constitutional Law</li>
                         <li>International Law</li>
@@ -200,7 +200,7 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Group VII — One subject, 100 marks</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-1.5 leading-relaxed list-disc pl-5">
                         <li>Journalism &amp; Mass Communication</li>
                         <li>Psychology</li>
                         <li>Geography</li>
@@ -211,7 +211,7 @@
                 </div>
                 <div class="card-paper" style="border-top-color: var(--gold);">
                     <h3 class="text-lg">How to Choose (Strategy)</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-2 leading-relaxed list-disc pl-5">
                         <li><strong>Background first:</strong> subjects you have already studied score higher and take less time.</li>
                         <li><strong>Overlap wins:</strong> International Relations overlaps Current Affairs; History overlaps Pakistan Affairs; Public Administration overlaps Governance.</li>
                         <li><strong>Scoring trend:</strong> check recent years' scoring trends, but never pick a subject you cannot study for three months straight.</li>
@@ -224,13 +224,13 @@
         <!-- Eligibility -->
         <section id="eligibility">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
-                <h2 class="font-display text-2xl text-olive-900">Eligibility — Check Before You Apply</h2>
+                <span class="rank-mark">■</span>
+                <h2 class="font-display text-2xl text-navy-900">Eligibility — Check Before You Apply</h2>
             </div>
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="card-paper">
                     <h3 class="text-lg">Who Can Apply</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-2 leading-relaxed list-disc pl-5">
                         <li><strong>Nationality:</strong> a citizen of Pakistan (or a person holding a valid claim under the rules).</li>
                         <li><strong>Education:</strong> a bachelor's degree with at least a <strong>second division (or Grade C)</strong> from a recognised university.</li>
                         <li><strong>Age:</strong> generally <strong>21 to 30 years</strong> on the cut-off date (31 December of the year before the exam), with relaxation under the rules for specified categories (e.g. government servants, recognised tribes/areas).</li>
@@ -239,13 +239,13 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Before You Register</h3>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-2 leading-relaxed list-disc pl-5">
                         <li>Read the <strong>FPSC advertisement</strong> for your year — it is the only final source for dates, fee, age relaxation and group rules.</li>
                         <li>Pass the <strong>MPT screening test</strong> first; only MPT qualifiers can sit the written examination.</li>
                         <li>Choose optional subjects <strong>before</strong> applying — they cannot be changed after submission.</li>
                         <li>Keep your documents ready: degree, CNIC, domicile and photographs as per the advertisement.</li>
                     </ul>
-                    <p class="text-sm mt-4"><a href="https://www.fpsc.gov.pk" target="_blank" rel="noopener" class="btn-olive !py-2.5 !px-5 text-sm">Visit FPSC Official Site →</a></p>
+                    <p class="text-sm mt-4"><a href="https://www.fpsc.gov.pk" target="_blank" rel="noopener" class="btn-navy !py-2.5 !px-5 text-sm">Visit FPSC Official Site →</a></p>
                 </div>
             </div>
         </section>
@@ -253,23 +253,23 @@
         <!-- Essay practice -->
         <section id="essay">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
+                <span class="rank-mark">■</span>
                 <div>
-                    <p class="eyebrow text-olive-700">100 Marks • 3 Hours • 2,500–3,000 Words</p>
-                    <h2 class="font-display text-2xl text-olive-900">Essay Practice — Write Like It Is the Real Paper</h2>
+                    <p class="eyebrow text-navy-700">100 Marks • 3 Hours • 2,500–3,000 Words</p>
+                    <h2 class="font-display text-2xl text-navy-900">Essay Practice — Write Like It Is the Real Paper</h2>
                 </div>
             </div>
 
             <!-- Practice timer -->
             <div class="card-paper flex flex-col md:flex-row md:items-center justify-between gap-5" style="border-top-color: var(--gold);">
                 <div>
-                    <span class="dogtag gold">⏱️ 3-Hour Practice Timer</span>
+                    <span class="badge-official gold">⏱️ 3-Hour Practice Timer</span>
                     <h3 class="text-lg mt-3">Simulate the Real Essay Paper</h3>
-                    <p class="text-sm text-[#4c4f42] mt-1 leading-relaxed">Pick a topic below, start the timer, and write for exactly three hours — outline first, essay second. No extensions on exam day.</p>
+                    <p class="text-sm text-[#3d4a5c] mt-1 leading-relaxed">Pick a topic below, start the timer, and write for exactly three hours — outline first, essay second. No extensions on exam day.</p>
                 </div>
                 <div class="text-center shrink-0">
-                    <p id="essayTimerText" class="font-mono font-bold text-4xl text-olive-900">3:00:00</p>
-                    <p id="essayTimerStatus" class="text-xs text-[#8a8f7c] mt-1">Timer ready — 3 hours</p>
+                    <p id="essayTimerText" class="font-mono font-bold text-4xl text-navy-900">3:00:00</p>
+                    <p id="essayTimerStatus" class="text-xs text-[#7a8aa0] mt-1">Timer ready — 3 hours</p>
                     <div class="flex gap-2 justify-center mt-3">
                         <button id="essayTimerBtn" onclick="toggleEssayTimer()" class="btn-gold !py-2 !px-5 text-sm">Start Timer</button>
                         <button id="essayTimerReset" onclick="resetEssayTimer()" class="btn-outline !py-2 !px-4 text-sm">Reset</button>
@@ -280,7 +280,7 @@
             <!-- Writing checklist -->
             <div class="card-paper mt-5">
                 <h3 class="text-lg">The Essay Checklist — Before You Write a Word</h3>
-                <div class="grid md:grid-cols-2 gap-x-8 gap-y-2 mt-3 text-sm text-[#4c4f42] leading-relaxed">
+                <div class="grid md:grid-cols-2 gap-x-8 gap-y-2 mt-3 text-sm text-[#3d4a5c] leading-relaxed">
                     <p>✓ <strong>Outline first (20–25 min):</strong> introduction, thesis statement, 4–6 main arguments with evidence, counter-argument, conclusion.</p>
                     <p>✓ <strong>Length:</strong> about <strong>2,500–3,000 words</strong> — too short looks thin, too long looks uncontrolled.</p>
                     <p>✓ <strong>Thesis in the introduction:</strong> one clear sentence that answers the topic directly.</p>
@@ -295,8 +295,8 @@
             <!-- Topic bank (rendered by JS) -->
             <div class="mt-6">
                 <div class="flex flex-wrap items-baseline gap-3">
-                    <h3 class="font-display text-xl text-olive-900">Essay Topic Bank — 20 Topics</h3>
-                    <span class="text-sm text-[#8a8f7c]"><span class="dogtag gold">Past Paper</span> = real FPSC topic with year &nbsp;•&nbsp; <span class="dogtag">Practice</span> = practice topic on a recurring theme</span>
+                    <h3 class="font-display text-xl text-navy-900">Essay Topic Bank — 20 Topics</h3>
+                    <span class="text-sm text-[#7a8aa0]"><span class="badge-official gold">Past Paper</span> = real FPSC topic with year &nbsp;•&nbsp; <span class="badge-official">Practice</span> = practice topic on a recurring theme</span>
                 </div>
                 <div id="essayTopicList" class="grid md:grid-cols-2 gap-5 mt-4">
                     <!-- Rendered by the script at the bottom of this page -->
@@ -307,16 +307,16 @@
         <!-- Précis practice -->
         <section id="precis">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
+                <span class="rank-mark">■</span>
                 <div>
-                    <p class="eyebrow text-olive-700">English (Précis &amp; Composition) — 100 Marks</p>
-                    <h2 class="font-display text-2xl text-olive-900">Précis Practice — Say It in One-Third the Words</h2>
+                    <p class="eyebrow text-navy-700">English (Précis &amp; Composition) — 100 Marks</p>
+                    <h2 class="font-display text-2xl text-navy-900">Précis Practice — Say It in One-Third the Words</h2>
                 </div>
             </div>
 
             <div class="card-paper">
                 <h3 class="text-lg">The Rules of a Good Précis</h3>
-                <div class="grid md:grid-cols-2 gap-x-8 gap-y-2 mt-3 text-sm text-[#4c4f42] leading-relaxed">
+                <div class="grid md:grid-cols-2 gap-x-8 gap-y-2 mt-3 text-sm text-[#3d4a5c] leading-relaxed">
                     <p>✓ <strong>Length:</strong> about <strong>one-third</strong> of the original passage — never much more, never much less.</p>
                     <p>✓ <strong>Own words:</strong> rewrite the sense in your own language; do not copy whole sentences from the passage.</p>
                     <p>✓ <strong>Title:</strong> give a short, suitable title that captures the central idea.</p>
@@ -333,7 +333,7 @@
                         <h3 class="text-lg">Passage 1 — The Value of Reading</h3>
                         <span class="kbd-chip">Original: 150 words</span>
                     </div>
-                    <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">Reading is the cheapest and most reliable way to educate oneself. A person who reads widely travels through centuries and countries without leaving his room, meets great minds, and learns from their mistakes and triumphs. Yet in an age of short videos and instant messages, the habit of reading is fading, especially among the young. Many read only what an examination demands and stop the moment the paper is over. This is a loss, because examinations test memory while books build judgement. A reader learns to weigh arguments, to doubt claims, and to hold two opposing ideas in mind without confusion. Nations that read produce citizens who can think, and citizens who can think build institutions that last. The habit need not be grand: twenty pages a day, kept without fail, amount to more than twenty books in a year. What matters is regularity, not speed, and curiosity, not compulsion.</p>
+                    <p class="text-sm text-[#3d4a5c] mt-3 leading-relaxed">Reading is the cheapest and most reliable way to educate oneself. A person who reads widely travels through centuries and countries without leaving his room, meets great minds, and learns from their mistakes and triumphs. Yet in an age of short videos and instant messages, the habit of reading is fading, especially among the young. Many read only what an examination demands and stop the moment the paper is over. This is a loss, because examinations test memory while books build judgement. A reader learns to weigh arguments, to doubt claims, and to hold two opposing ideas in mind without confusion. Nations that read produce citizens who can think, and citizens who can think build institutions that last. The habit need not be grand: twenty pages a day, kept without fail, amount to more than twenty books in a year. What matters is regularity, not speed, and curiosity, not compulsion.</p>
                     <details class="faq mt-4">
                         <summary>Show model précis — “Reading Builds Judgement” (52 words)</summary>
                         <p>Reading is the cheapest way to educate oneself: books let a reader meet great minds and build judgement, while examinations test only memory. Yet the habit is fading among the young. Twenty pages a day amount to more than twenty books a year, and nations that read produce citizens who can think.</p>
@@ -347,7 +347,7 @@
                         <h3 class="text-lg">Passage 2 — Discipline</h3>
                         <span class="kbd-chip">Original: 149 words</span>
                     </div>
-                    <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">Discipline is often misunderstood as punishment, but it is really the habit of doing what ought to be done, whether one feels like it or not. Talent without discipline is like a river without banks: it spreads widely and reaches nowhere. The student who studies a little every day will, in a year, overtake the brilliant student who studies only before examinations. Armies understand this better than most institutions, which is why their training repeats small acts until they become reflex. The same principle governs civil service: files move on time, promises are kept, and the public is served, only when officers act from habit rather than mood. Discipline also protects freedom, because a person who governs himself does not need to be governed by others. It is not the enemy of creativity; it is the frame that holds creativity steady long enough for it to produce something lasting.</p>
+                    <p class="text-sm text-[#3d4a5c] mt-3 leading-relaxed">Discipline is often misunderstood as punishment, but it is really the habit of doing what ought to be done, whether one feels like it or not. Talent without discipline is like a river without banks: it spreads widely and reaches nowhere. The student who studies a little every day will, in a year, overtake the brilliant student who studies only before examinations. Armies understand this better than most institutions, which is why their training repeats small acts until they become reflex. The same principle governs civil service: files move on time, promises are kept, and the public is served, only when officers act from habit rather than mood. Discipline also protects freedom, because a person who governs himself does not need to be governed by others. It is not the enemy of creativity; it is the frame that holds creativity steady long enough for it to produce something lasting.</p>
                     <details class="faq mt-4">
                         <summary>Show model précis — “Discipline: Habit, Not Punishment” (52 words)</summary>
                         <p>Discipline is the habit of doing what ought to be done, regardless of mood, not punishment. Talent without it spreads everywhere and reaches nowhere, while steady daily study overtakes last-minute brilliance. Armies build it through repetition, and the civil service depends on it for timely work. Self-governed people need no external control.</p>
@@ -361,7 +361,7 @@
                         <h3 class="text-lg">Passage 3 — Water in Pakistan</h3>
                         <span class="kbd-chip">Original: 143 words</span>
                     </div>
-                    <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">Water is the quiet foundation of Pakistan's economy, yet it is treated as if it were limitless. Four out of five Pakistanis depend, directly or indirectly, on farming, and farming depends on the Indus and its canals. But the canals lose much of their water to seepage and theft, the water table falls every year, and the population grows faster than the supply. Climate change has made the pattern worse: glaciers melt faster, rains fall in violent bursts, and droughts last longer. The answer is not a single dam but a discipline of use: lining canals, pricing water honestly, growing crops that suit dry lands, and storing monsoon rain instead of letting it run to the sea. Countries that learned this lesson early now export food; countries that ignored it import it. Pakistan must choose which of the two it wishes to be.</p>
+                    <p class="text-sm text-[#3d4a5c] mt-3 leading-relaxed">Water is the quiet foundation of Pakistan's economy, yet it is treated as if it were limitless. Four out of five Pakistanis depend, directly or indirectly, on farming, and farming depends on the Indus and its canals. But the canals lose much of their water to seepage and theft, the water table falls every year, and the population grows faster than the supply. Climate change has made the pattern worse: glaciers melt faster, rains fall in violent bursts, and droughts last longer. The answer is not a single dam but a discipline of use: lining canals, pricing water honestly, growing crops that suit dry lands, and storing monsoon rain instead of letting it run to the sea. Countries that learned this lesson early now export food; countries that ignored it import it. Pakistan must choose which of the two it wishes to be.</p>
                     <details class="faq mt-4">
                         <summary>Show model précis — “Pakistan's Water Challenge” (52 words)</summary>
                         <p>Water underpins Pakistan's farm economy, yet it is wasted through canal seepage, theft, and falling water tables, while population growth and climate change worsen scarcity. The remedy is disciplined use: lined canals, honest pricing, dry-land crops, and rain storage. Nations that learned this export food; Pakistan must decide whether to join them.</p>
@@ -369,24 +369,24 @@
                     </details>
                 </div>
             </div>
-            <p class="text-sm text-[#4c4f42] mt-4 leading-relaxed">Try it yourself: cover the model précis, write your own in about 50 words, then compare — did you keep the main idea, drop the illustrations, and stay in your own words?</p>
+            <p class="text-sm text-[#3d4a5c] mt-4 leading-relaxed">Try it yourself: cover the model précis, write your own in about 50 words, then compare — did you keep the main idea, drop the illustrations, and stay in your own words?</p>
         </section>
 
         <!-- Interview guidance -->
         <section id="interview">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
+                <span class="rank-mark">■</span>
                 <div>
-                    <p class="eyebrow text-olive-700">300 Marks • 100 to Pass</p>
-                    <h2 class="font-display text-2xl text-olive-900">Interview — Psychological Assessment &amp; Viva Voce</h2>
+                    <p class="eyebrow text-navy-700">300 Marks • 100 to Pass</p>
+                    <h2 class="font-display text-2xl text-navy-900">Interview — Psychological Assessment &amp; Viva Voce</h2>
                 </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="card-paper">
                     <h3 class="text-lg">Psychological Assessment — Qualifying Only</h3>
-                    <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">Candidates who clear the written examination face psychological testing before the interview. It carries <strong>no marks in the final merit</strong> — it is a pass/fail judgement of suitability.</p>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                    <p class="text-sm text-[#3d4a5c] mt-3 leading-relaxed">Candidates who clear the written examination face psychological testing before the interview. It carries <strong>no marks in the final merit</strong> — it is a pass/fail judgement of suitability.</p>
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-2 leading-relaxed list-disc pl-5">
                         <li><strong>Written tests:</strong> sentence completion, word association, picture stories and similar exercises — answer honestly and consistently; the tests are designed to catch rehearsed answers.</li>
                         <li><strong>Group tasks:</strong> group discussion and command tasks that show leadership, listening and teamwork under pressure.</li>
                         <li><strong>Individual assessment:</strong> a short interview with a psychologist about your background, attitudes and motivation.</li>
@@ -395,8 +395,8 @@
                 </div>
                 <div class="card-paper">
                     <h3 class="text-lg">Viva Voce — 300 Marks</h3>
-                    <p class="text-sm text-[#4c4f42] mt-3 leading-relaxed">A formal interview before an FPSC panel, usually lasting 20–30 minutes. You need <strong>100 marks (33%)</strong> to pass, and the score counts directly in your final merit position — a strong viva can lift you many places up the list.</p>
-                    <ul class="text-sm text-[#4c4f42] mt-3 space-y-2 leading-relaxed list-disc pl-5">
+                    <p class="text-sm text-[#3d4a5c] mt-3 leading-relaxed">A formal interview before an FPSC panel, usually lasting 20–30 minutes. You need <strong>100 marks (33%)</strong> to pass, and the score counts directly in your final merit position — a strong viva can lift you many places up the list.</p>
+                    <ul class="text-sm text-[#3d4a5c] mt-3 space-y-2 leading-relaxed list-disc pl-5">
                         <li><strong>What is tested:</strong> communication, confidence, awareness of current affairs, grip on your optional subjects, and suitability for public service.</li>
                         <li><strong>Your file is on the table:</strong> the panel has your written marks, psychological report and service preferences — expect questions from all of them.</li>
                         <li><strong>Honesty beats performance:</strong> say “I don't know” rather than guessing; panels respect it and penalise bluffing.</li>
@@ -406,8 +406,8 @@
 
             <!-- 20 common questions -->
             <div class="mt-6">
-                <h3 class="font-display text-xl text-olive-900">20 Common Interview Questions — With Answer Guidance</h3>
-                <p class="text-sm text-[#8a8f7c] mt-1">Tap a question to see how to approach it. These are the questions panels ask year after year.</p>
+                <h3 class="font-display text-xl text-navy-900">20 Common Interview Questions — With Answer Guidance</h3>
+                <p class="text-sm text-[#7a8aa0] mt-1">Tap a question to see how to approach it. These are the questions panels ask year after year.</p>
                 <div class="space-y-3 mt-4 max-w-4xl">
                     <details class="faq"><summary>1. Introduce yourself.</summary><p>Keep it to 60–90 seconds: name, education, domicile, optional subjects, and one line on why you chose the civil service. Do not recite your whole life story — the panel has your form in front of them.</p></details>
                     <details class="faq"><summary>2. Why do you want to join the civil service?</summary><p>Lead with service, not status: public service, solving real problems, and using your education for the country. Avoid “power”, “prestige” or “job security” as your first reasons.</p></details>
@@ -435,7 +435,7 @@
             <!-- Practical tips -->
             <div class="card-paper mt-6">
                 <h3 class="text-lg">Practical Tips for Interview Day</h3>
-                <div class="grid md:grid-cols-2 gap-x-8 gap-y-2 mt-3 text-sm text-[#4c4f42] leading-relaxed">
+                <div class="grid md:grid-cols-2 gap-x-8 gap-y-2 mt-3 text-sm text-[#3d4a5c] leading-relaxed">
                     <p>✓ <strong>Dress:</strong> formal, neat and simple — a suit or shalwar kameez with waistcoat; polished shoes; nothing flashy.</p>
                     <p>✓ <strong>Arrive early:</strong> reach the centre at least 45 minutes before your slot, documents in order.</p>
                     <p>✓ <strong>Current affairs:</strong> read the newspaper every morning for the last two weeks before the interview; know the top five national and five international stories.</p>
@@ -451,44 +451,44 @@
         <!-- Past papers -->
         <section id="past-papers">
             <div class="section-head mb-5">
-                <span class="rank-mark">❯❯❯</span>
+                <span class="rank-mark">■</span>
                 <div>
-                    <p class="eyebrow text-olive-700">Compulsory Papers by Year</p>
-                    <h2 class="font-display text-2xl text-olive-900">Past Papers — 2020 to 2025</h2>
+                    <p class="eyebrow text-navy-700">Compulsory Papers by Year</p>
+                    <h2 class="font-display text-2xl text-navy-900">Past Papers — 2020 to 2025</h2>
                 </div>
             </div>
-            <p class="text-sm text-[#4c4f42] leading-relaxed max-w-3xl">Past papers are the best guide to what the FPSC actually asks. Each year the written examination carries the same six compulsory papers below (plus the optional papers each candidate chose). Work through at least the last three years of Essay and Précis papers under timed conditions.</p>
+            <p class="text-sm text-[#3d4a5c] leading-relaxed max-w-3xl">Past papers are the best guide to what the FPSC actually asks. Each year the written examination carries the same six compulsory papers below (plus the optional papers each candidate chose). Work through at least the last three years of Essay and Précis papers under timed conditions.</p>
             <div class="overflow-x-auto rounded-2xl border border-[--line] bg-white shadow-sm mt-5">
-                <table class="table-army">
+                <table class="table-main">
                     <thead>
                         <tr><th>Year (exam held)</th><th>Compulsory Papers Set</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td class="font-bold">2025 <span class="text-[#8a8f7c] font-normal">(Feb 2025)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
-                        <tr><td class="font-bold">2024 <span class="text-[#8a8f7c] font-normal">(Feb–Mar 2024)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
-                        <tr><td class="font-bold">2023 <span class="text-[#8a8f7c] font-normal">(Feb 2023)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
-                        <tr><td class="font-bold">2022 <span class="text-[#8a8f7c] font-normal">(May 2022)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
-                        <tr><td class="font-bold">2021 <span class="text-[#8a8f7c] font-normal">(Feb 2021)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
-                        <tr><td class="font-bold">2020 <span class="text-[#8a8f7c] font-normal">(Feb 2020)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
+                        <tr><td class="font-bold">2025 <span class="text-[#7a8aa0] font-normal">(Feb 2025)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
+                        <tr><td class="font-bold">2024 <span class="text-[#7a8aa0] font-normal">(Feb–Mar 2024)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
+                        <tr><td class="font-bold">2023 <span class="text-[#7a8aa0] font-normal">(Feb 2023)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
+                        <tr><td class="font-bold">2022 <span class="text-[#7a8aa0] font-normal">(May 2022)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
+                        <tr><td class="font-bold">2021 <span class="text-[#7a8aa0] font-normal">(Feb 2021)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
+                        <tr><td class="font-bold">2020 <span class="text-[#7a8aa0] font-normal">(Feb 2020)</span></td><td>English Essay, English (Précis &amp; Composition), General Science &amp; Ability, Current Affairs, Pakistan Affairs, Islamic Studies</td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="card-paper mt-5 flex flex-col md:flex-row md:items-center justify-between gap-4" style="border-top-color: var(--gold);">
                 <div>
                     <h3 class="text-lg">Where to Get the Papers</h3>
-                    <p class="text-sm text-[#4c4f42] mt-1 leading-relaxed">The FPSC publishes past papers on its official website. We do not host or link to unofficial copies — go to the source, choose the year and subject, and download from there.</p>
+                    <p class="text-sm text-[#3d4a5c] mt-1 leading-relaxed">The FPSC publishes past papers on its official website. We do not host or link to unofficial copies — go to the source, choose the year and subject, and download from there.</p>
                 </div>
-                <a href="https://www.fpsc.gov.pk" target="_blank" rel="noopener" class="btn-olive !py-3 !px-6 text-sm shrink-0">fpsc.gov.pk — Past Papers →</a>
+                <a href="https://www.fpsc.gov.pk" target="_blank" rel="noopener" class="btn-navy !py-3 !px-6 text-sm shrink-0">fpsc.gov.pk — Past Papers →</a>
             </div>
-            <p class="text-sm text-[#4c4f42] mt-4 leading-relaxed"><strong>How to use them:</strong> attempt each essay topic from the bank above under the 3-hour timer; solve the Précis paper's comprehension and grammar questions; and compare your Current Affairs answers against the news of that year. A paper you have attempted and reviewed is worth ten you have only read.</p>
+            <p class="text-sm text-[#3d4a5c] mt-4 leading-relaxed"><strong>How to use them:</strong> attempt each essay topic from the bank above under the 3-hour timer; solve the Précis paper's comprehension and grammar questions; and compare your Current Affairs answers against the news of that year. A paper you have attempted and reviewed is worth ten you have only read.</p>
         </section>
 
         <!-- Practice CTA -->
         <section>
             <div class="card-paper text-center" style="border-top-color: var(--gold);">
-                <span class="dogtag gold">🎯 Next Step</span>
-                <h2 class="font-display text-2xl text-olive-900 mt-3">Knowledge Is Not Enough — Test It</h2>
-                <p class="text-[#4c4f42] mt-2 max-w-xl mx-auto leading-relaxed">Two new MCQ banks are live on the dashboard: <strong>CSS Compulsory MCQs</strong> and <strong>English Précis &amp; Composition</strong>. Take a 10-question set now and see where you stand.</p>
+                <span class="badge-official gold">🎯 Next Step</span>
+                <h2 class="font-display text-2xl text-navy-900 mt-3">Knowledge Is Not Enough — Test It</h2>
+                <p class="text-[#3d4a5c] mt-2 max-w-xl mx-auto leading-relaxed">Two new MCQ banks are live on the dashboard: <strong>CSS Compulsory MCQs</strong> and <strong>English Précis &amp; Composition</strong>. Take a 10-question set now and see where you stand.</p>
                 <div class="flex flex-wrap justify-center gap-3 mt-5">
                     <a href="dashboard.html" class="btn-gold">Go to Dashboard →</a>
                     <a href="exams.html" class="btn-outline">Compare Exam Patterns →</a>
@@ -499,7 +499,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-olive-950 text-khaki mt-auto">
+    <footer class="bg-navy-950 text-mist mt-auto">
         <div class="max-w-6xl mx-auto px-6 py-8">
             <p class="text-center text-sm">CadetToCSP — From Cadet to CSP Officer. 🇵🇰</p>
             <p class="text-center text-xs opacity-70 mt-2">Built for aspirants preparing for CSS, PMS, PPSC, FPSC &amp; Armed Forces tests. Exam figures follow the published FPSC pattern; the official advertisement for your year is final.</p>
@@ -539,11 +539,11 @@
             if (!list) return;
             list.innerHTML = ESSAY_TOPICS.map(function (t, i) {
                 const badge = t.tag === 'Past Paper'
-                    ? '<span class="dogtag gold">CSS ' + t.year + ' • Past Paper</span>'
-                    : '<span class="dogtag">Practice Topic</span>';
+                    ? '<span class="badge-official gold">CSS ' + t.year + ' • Past Paper</span>'
+                    : '<span class="badge-official">Practice Topic</span>';
                 return '<div class="card-paper"><div class="flex justify-between items-start gap-2">' + badge + '<span class="kbd-chip">#' + (i + 1) + '</span></div>'
                     + '<h3 class="text-lg mt-3">\u201C' + t.topic + '\u201D</h3>'
-                    + '<p class="text-sm text-[#4c4f42] mt-2 leading-relaxed"><strong>Outline hint:</strong> ' + t.hint + '</p></div>';
+                    + '<p class="text-sm text-[#3d4a5c] mt-2 leading-relaxed"><strong>Outline hint:</strong> ' + t.hint + '</p></div>';
             }).join('');
         }
 

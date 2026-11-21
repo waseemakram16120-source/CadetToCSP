@@ -10,14 +10,14 @@
             theme: {
                 extend: {
                     colors: {
-                        olive: { 950:'#1e2410', 900:'#2e3313', 800:'#3f4a1f', 700:'#4b5320', 600:'#5c6828', 500:'#6f7d33' },
-                        gold: '#c9a227',
-                        khaki: '#c3b091',
-                        charcoal: '#1c1e1a',
-                        paper: '#f4f1e6'
+                        navy: { 950:'#0f2040', 900:'#1a2f4e', 800:'#24406a', 700:'#2c4f7c', 600:'#3a6394', 500:'#4a76ab', 200:'#b9c8dc', 100:'#dbe4f0', 50:'#eef2f7' },
+                        gold: '#b08d2e',
+                        mist: '#d7dee8',
+                        steel: '#5a6b82',
+                        paper: '#f7f8fa'
                     },
                     fontFamily: {
-                        display: ['"Saira Stencil One"', 'cursive'],
+                        display: ['"Playfair Display"', 'Georgia', 'serif'],
                         body: ['Inter', 'sans-serif']
                     }
                 }
@@ -26,7 +26,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <!-- Firebase (compat builds, plain <script> tags — no modules, works from file://).
          Version 12.11.0 per Google's official docs. If js/firebase-config.js still
@@ -38,10 +38,10 @@
     <script src="js/firebase-config.js"></script>
     <script src="js/firebase.js"></script>
 </head>
-<body class="ops-dark font-body min-h-screen flex flex-col">
+<body class="paper-light font-body min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <nav class="nav-army">
+    <nav class="nav-main">
         <div class="max-w-7xl mx-auto px-6 md:px-8 py-3.5 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-2.5">
                 <span class="logo-badge">CC</span>
@@ -54,19 +54,19 @@
                 <a href="dashboard.html" class="nav-link">Dashboard</a>
                 <a href="leaderboard.html" class="nav-link">Leaderboard</a>
             </div>
-            <a href="index.html" class="text-khaki hover:text-white text-sm font-semibold transition">← Back to Home</a>
+            <a href="index.html" class="text-mist hover:text-white text-sm font-semibold transition">← Back to Home</a>
         </div>
-        <div class="chevron-strip thin"></div>
+        <div class="rule-strip thin"></div>
     </nav>
 
     <!-- Main Auth Card -->
     <main class="max-w-md w-full mx-auto px-6 py-10 flex-1 flex flex-col justify-center">
-        <div class="card-army !p-8 shadow-2xl">
+        <div class="card-main !p-8 shadow-2xl">
 
             <div class="text-center mb-6">
-                <span class="dogtag gold">Secure Aspirant Portal</span>
-                <h2 id="authTitle" class="font-display text-2xl mt-4 text-white">Sign in to your account</h2>
-                <p id="authSubtitle" class="text-[#a9ad97] text-sm mt-1">Prepare for PPSC &amp; Armed Forces tests</p>
+                <span class="badge-official gold">Secure Aspirant Portal</span>
+                <h2 id="authTitle" class="font-display text-2xl mt-4 text-navy-900">Sign in to your account</h2>
+                <p id="authSubtitle" class="text-[#5a6b82] text-sm mt-1">Prepare for PPSC &amp; Armed Forces tests</p>
             </div>
 
             <!-- Firebase setup notice (shown only until a real config is pasted in) -->
@@ -82,54 +82,54 @@
             <!-- Form -->
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div id="nameFieldBox" class="hidden">
-                    <label class="label-army" for="userName">Full Name / Rank</label>
+                    <label class="label-main" for="userName">Full Name / Rank</label>
                     <input id="userName" type="text" placeholder="e.g., Muhammad Ali (Aspirant)"
-                        class="input-army" />
+                        class="input-main" />
                 </div>
 
                 <div>
-                    <label class="label-army" for="userEmail">Email Address</label>
+                    <label class="label-main" for="userEmail">Email Address</label>
                     <input id="userEmail" type="email" required placeholder="aspirant@gmail.com"
-                        class="input-army" />
+                        class="input-main" />
                 </div>
 
                 <div>
-                    <label class="label-army" for="userPassword">Password</label>
+                    <label class="label-main" for="userPassword">Password</label>
                     <input id="userPassword" type="password" required placeholder="••••••••"
-                        class="input-army" />
+                        class="input-main" />
                 </div>
 
                 <p id="authError" class="hidden text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></p>
-                <p id="authNotice" class="hidden text-sm text-[#e3c766] bg-[rgba(201,162,39,.1)] border border-[rgba(201,162,39,.4)] rounded-lg px-3 py-2"></p>
+                <p id="authNotice" class="hidden text-sm text-[#8a6d1a] bg-[rgba(176,141,46,.1)] border border-[rgba(176,141,46,.4)] rounded-lg px-3 py-2"></p>
 
                 <button type="submit" id="submitBtn" class="btn-gold w-full">
                     Sign In
                 </button>
 
                 <p class="text-center">
-                    <button type="button" id="forgotBtn" onclick="forgotPassword()" class="text-xs text-[#a9ad97] hover:text-white underline">Forgot password?</button>
+                    <button type="button" id="forgotBtn" onclick="forgotPassword()" class="text-xs text-[#5a6b82] hover:text-navy-900 underline">Forgot password?</button>
                 </p>
             </form>
 
             <!-- Divider -->
             <div class="relative my-6 text-center">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#33362a]"></div></div>
-                <span class="relative px-3 text-xs text-[#8a8f7c] uppercase" style="background: var(--charcoal-2);">Or continue without an account</span>
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#c9d3e0]"></div></div>
+                <span class="relative px-3 text-xs text-[#7a8aa0] uppercase" style="background: var(--navy-50);">Or continue without an account</span>
             </div>
 
             <!-- 1-Click Guest Login -->
-            <button onclick="guestLogin()" class="btn-outline w-full !text-white text-sm flex items-center justify-center space-x-2">
+            <button onclick="guestLogin()" class="btn-outline w-full !text-navy-900 text-sm flex items-center justify-center space-x-2">
                 <span>⚡ Continue as Guest — no account needed</span>
             </button>
 
             <!-- Switch Mode Toggle -->
-            <p class="text-center text-sm text-[#a9ad97] mt-6">
+            <p class="text-center text-sm text-[#5a6b82] mt-6">
                 <span id="switchText">Don't have an account?</span>
                 <button type="button" onclick="toggleAuthMode(this)" class="text-gold font-semibold hover:underline ml-1">Register</button>
             </p>
 
             <!-- Storage note (text is swapped by JS once Firebase state is known) -->
-            <div id="storageNote" class="notice-olive mt-6 text-xs leading-relaxed">
+            <div id="storageNote" class="notice-navy mt-6 text-xs leading-relaxed">
                 <strong>Guest mode:</strong> Firebase is not connected yet, so this page
                 works as a demo — names and emails are stored only in your own browser
                 (localStorage). There is no server and no real password protection, so
@@ -141,7 +141,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer-army text-center py-5 text-xs text-khaki/70">
+    <footer class="footer-main text-center py-5 text-xs text-mist/70">
         <p>© 2026 CadetToCSP — Authentication Portal</p>
     </footer>
 
